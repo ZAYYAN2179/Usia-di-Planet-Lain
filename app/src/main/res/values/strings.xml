@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Usia di Planet Lain</string>
+    <string name="tentang_aplikasi">Tentang Aplikasi</string>
+    <string name="copyright">Usia di Planet Lain Adalah
+        aplikasi yang memungkinkan pengguna menghitung dan
+        membandingkan umur mereka di Bumi dengan umur di
+        planet lain dalam Tata Surya. Pengguna cukup memasukkan
+        usia mereka di Bumi, lalu memilih planet yang diinginkan
+        untuk melihat berapa usia mereka berdasarkan periode
+        revolusi planet tersebut. Aplikasi ini menggunakan perhitungan
+        sederhana dengan membagi umur di Bumi dengan periode revolusi
+        masing-masing planet.\n\nMuh Zayyan Al Thaaf Nur</string>
+    <string name="kembali">Kembali</string>
 </resources>
