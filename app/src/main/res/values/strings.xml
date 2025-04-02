@@ -11,4 +11,40 @@
         sederhana dengan membagi umur di Bumi dengan periode revolusi
         masing-masing planet.\n\nMuh Zayyan Al Thaaf Nur</string>
     <string name="kembali">Kembali</string>
+    <string name="planet_mercury">Merkurius</string>
+    <string name="planet_venus">Venus</string>
+    <string name="planet_earth">Bumi</string>
+    <string name="planet_mars">Mars</string>
+    <string name="planet_jupiter">Jupiter</string>
+    <string name="planet_saturn">Saturnus</string>
+    <string name="planet_uranus">Uranus</string>
+    <string name="planet_neptune">Neptunus</string>
+
+    <string name="ringkasan_merkurius">Satu tahun Merkurius: 88 hari Bumi</string>
+    <string name="ringkasan_venus">Satu tahun Venus: 225 hari Bumi</string>
+    <string name="ringkasan_mars">Satu tahun Mars: 687 hari Bumi</string>
+    <string name="ringkasan_jupiter">Satu tahun Jupiter: 4.332 hari Bumi</string>
+    <string name="ringkasan_saturnus">Satu tahun Saturnus: 10.759 hari Bumi</string>
+    <string name="ringkasan_uranus">Satu tahun Uranus: 30.688 hari Bumi</string>
+    <string name="ringkasan_neptunus">Satu tahun Neptunus: 60.190 hari Bumi</string>
+
+
+    <!-- Age Calculator Screen -->
+    <string name="tampilan_hitung_usia">Perhitungan Usia di Planet Lain</string>
+    <string name="input_usia">Masukkan Usia Anda di Bumi (tahun)</string>
+    <string name="pilih_planet">Pilih Planet</string>
+    <string name="tombol_hitung_usia">Hitung Usia</string>
+    <string name="tahun">tahun</string>
+    <string name="bulan">bulan</string>
+    <string name="hari">hari</string>
+
+    <!-- Result text -->
+    <string name="hasil_perhitungan">Hasil Perhitungan</string>
+    <string name="usia_hasil">Usia Anda di %1$s:</string>
+    <string name="konversi_tahun">Satu tahun di %1$s setara dengan %2$.2f tahun di Bumi</string>
+
+    <!-- Error messages -->
+    <string name="error_kosong">Silakan masukkan usia Anda</string>
+    <string name="error_invalid">Masukkan nilai usia yang valid</string>
+    <string name="error_negatif">Usia harus lebih dari 0</string>
 </resources>

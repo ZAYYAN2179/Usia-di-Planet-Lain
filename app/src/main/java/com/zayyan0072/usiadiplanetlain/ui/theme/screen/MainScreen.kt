@@ -9,11 +9,13 @@ import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.zayyan0072.usiadiplanetlain.R
@@ -80,17 +82,32 @@ fun MainScreen(navController: NavHostController) {
             )
         }
     ) { innerPadding ->
-        ScreenContent(Modifier.padding(innerPadding))
+        ScreenContent(
+            modifier = Modifier.padding(innerPadding),
+            navController = navController
+        )
     }
 }
 
 @Composable
-fun ScreenContent(modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello Zayyan",
-        modifier = modifier
-    )
+fun ScreenContent(modifier: Modifier = Modifier, navController: NavHostController) {
+    Column(
+        modifier = modifier.padding(16.dp).fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Button(
+            onClick = {
+                navController.navigate(Screen.Count.route)
+            },
+            modifier = Modifier.wrapContentWidth(),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF64B5F6)) // Oranye terang
+        ) {
+            Text(text = "Hitung Usia di Planet Lain", color = Color.White)
+        }
+    }
 }
+
+
 
 @Preview(showBackground = true)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
