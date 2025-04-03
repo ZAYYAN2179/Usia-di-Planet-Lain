@@ -100,7 +100,7 @@ fun ScreenContent(modifier: Modifier = Modifier, navController: NavHostControlle
                 navController.navigate(Screen.Count.route)
             },
             modifier = Modifier.wrapContentWidth(),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF64B5F6)) // Oranye terang
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF64B5F6))
         ) {
             Text(text = stringResource(R.string.navigasi_hitung), color = Color.White)
         }

@@ -21,7 +21,7 @@
     <string name="ringkasan_saturnus">One Saturn year: 10.759 Earth days</string>
     <string name="ringkasan_uranus">One Uranus year: 30.688 Earth days</string>
     <string name="ringkasan_neptunus">One Neptune year: 60.190 Earth days</string>
-    <string name="tampilan_hitung_usia">Calculating Age on Other Planets</string>
+    <string name="tampilan_hitung_usia">Calculate Age on Other Planets</string>
     <string name="input_usia">Enter your Age on Earth (years)</string>
     <string name="pilih_planet">Choose a Planet</string>
     <string name="tombol_hitung_usia">Calculate Age</string>

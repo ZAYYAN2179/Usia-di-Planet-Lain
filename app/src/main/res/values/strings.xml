@@ -32,7 +32,7 @@
     <string name="ringkasan_neptunus">Satu tahun Neptunus: 60.190 hari Bumi</string>
 
     <!-- Inputan Pengguna -->
-    <string name="tampilan_hitung_usia">Perhitungan Usia di Planet Lain</string>
+    <string name="tampilan_hitung_usia">Hitung Usia di Planet Lain</string>
     <string name="input_usia">Masukkan Usia Anda di Bumi (tahun)</string>
     <string name="pilih_planet">Pilih Planet</string>
     <string name="tombol_hitung_usia">Hitung Usia</string>

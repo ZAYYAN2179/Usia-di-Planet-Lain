@@ -5,8 +5,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,11 +24,18 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.zayyan0072.usiadiplanetlain.R
+import com.zayyan0072.usiadiplanetlain.navigation.Screen
 import com.zayyan0072.usiadiplanetlain.ui.theme.UsiaDiPlanetLainTheme
 import kotlin.math.floor
 
 data class Planet(
     val nameResId: Int, val revolutionPeriod: Double
+)
+
+// Membuat Saver untuk Planet
+val PlanetSaver = listSaver<Planet, Any>(
+    save = { listOf(it.nameResId, it.revolutionPeriod) },
+    restore = { Planet(it[0] as Int, it[1] as Double) }
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,13 +51,13 @@ fun AgeCountScreen(navController: NavHostController) {
         Planet(R.string.planet_neptune, 164.79)
     )
 
-    var statusDropdown by remember { mutableStateOf(false) }
-    var planetTerpilih by remember { mutableStateOf(planets[0]) }
-    var planetDihitung by remember { mutableStateOf(planets[0]) }
-    var inputUsia by remember { mutableStateOf("") }
-    var usiaDiPlanetTerpilih by remember { mutableStateOf<Double?>(null) }
-    var statusHitung by remember { mutableStateOf(false) }
-    var pesanKesalahan by remember { mutableStateOf<String?>(null) }
+    var statusDropdown by rememberSaveable { mutableStateOf(false) }
+    var planetTerpilih by rememberSaveable(stateSaver = PlanetSaver) { mutableStateOf(planets[0]) }
+    var planetDihitung by rememberSaveable(stateSaver = PlanetSaver) { mutableStateOf(planets[0]) }
+    var inputUsia by rememberSaveable { mutableStateOf("") }
+    var usiaDiPlanetTerpilih by rememberSaveable { mutableStateOf<Double?>(null) }
+    var statusHitung by rememberSaveable { mutableStateOf(false) }
+    var pesanKesalahan by rememberSaveable { mutableStateOf<String?>(null) }
     val konteks = LocalContext.current
 
     Scaffold(topBar = {
@@ -63,8 +73,17 @@ fun AgeCountScreen(navController: NavHostController) {
             Text(text = stringResource(R.string.tampilan_hitung_usia))
         }, colors = TopAppBarDefaults.mediumTopAppBarColors(
             containerColor = Color(0xFF0D47A1), titleContentColor = Color.White
-        )
-        )
+        ), actions = {
+            IconButton(onClick = {
+                navController.navigate(Screen.About.route)
+            }) {
+                Icon(
+                    imageVector = Icons.Outlined.Info,
+                    contentDescription = stringResource(R.string.tentang_aplikasi),
+                    tint = Color.White
+                )
+            }
+        })
     }) { innerPadding ->
         Column(
             modifier = Modifier
@@ -202,6 +221,7 @@ fun AgeCountScreen(navController: NavHostController) {
                                     textAlign = TextAlign.Center
                                 )
                             }
+
                             totalMonths > 0 -> {
                                 Text(
                                     text = "$totalMonths ${stringResource(R.string.bulan)}",
@@ -212,6 +232,7 @@ fun AgeCountScreen(navController: NavHostController) {
                                     textAlign = TextAlign.Center
                                 )
                             }
+
                             totalDays > 0 -> {
                                 Text(
                                     text = "$totalDays ${stringResource(R.string.hari)}",
