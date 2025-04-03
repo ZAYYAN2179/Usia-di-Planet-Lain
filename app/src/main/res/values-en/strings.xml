@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Age on Another Planet</string>
+    <string name="tentang_aplikasi">About the App</string>
+    <string name="copyright">Age on Other Planets is an app that allows users to calculate and compare their age on Earth with the age on other planets in the Solar System. Users simply enter their age on Earth, then select the desired planet to see how old they are based on the planet\'s revolution period. The app uses a simple calculation by dividing the age on Earth by the revolution period of each planet.\n\nMuh Zayyan Al Thaaf Nur</string>
+    <string name="navigasi_hitung">Calculate Age on Other Planets</string>
+    <string name="kembali">Back</string>
+    <string name="keluar_aplikasi">Exit</string>
+    <string name="planet_mercury">Mercury</string>
+    <string name="planet_venus">Venus</string>
+    <string name="planet_earth">Earth</string>
+    <string name="planet_mars">Mars</string>
+    <string name="planet_jupiter">Jupiter</string>
+    <string name="planet_saturn">Saturn</string>
+    <string name="planet_uranus">Uranus</string>
+    <string name="planet_neptune">Neptune</string>
+    <string name="ringkasan_merkurius">One Mercury year: 88 Earth days</string>
+    <string name="ringkasan_venus">One Venus year: 225 Earth days</string>
+    <string name="ringkasan_mars">One Mars year: 687 Earth days</string>
+    <string name="ringkasan_jupiter">One Jupiter year: 4.332 Earth days</string>
+    <string name="ringkasan_saturnus">One Saturn year: 10.759 Earth days</string>
+    <string name="ringkasan_uranus">One Uranus year: 30.688 Earth days</string>
+    <string name="ringkasan_neptunus">One Neptune year: 60.190 Earth days</string>
+    <string name="tampilan_hitung_usia">Calculating Age on Other Planets</string>
+    <string name="input_usia">Enter your Age on Earth (years)</string>
+    <string name="pilih_planet">Choose a Planet</string>
+    <string name="tombol_hitung_usia">Calculate Age</string>
+    <string name="tahun">Year</string>
+    <string name="bulan">Month</string>
+    <string name="hari">Day</string>
+    <string name="hasil_perhitungan">Calculation Result</string>
+    <string name="usia_hasil">Your age is in %1$s:</string>
+    <string name="konversi_tahun">One year on %1$s is equivalent to %2$.2f years on Earth</string>
+    <string name="error_kosong">Please enter your age</string>
+    <string name="error_invalid">Enter a valid age value</string>
+    <string name="error_negatif">Age must be greater than 0</string>
+</resources>

@@ -48,7 +48,7 @@ fun MainScreen(navController: NavHostController) {
                             onDismissRequest = { showMenu = false }
                         ) {
                             DropdownMenuItem(
-                                text = { Text("Keluar") },
+                                text = { Text(text = stringResource(R.string.keluar_aplikasi)) },
                                 leadingIcon = {
                                     Icon(
                                         imageVector = Icons.AutoMirrored.Filled.ExitToApp,
@@ -102,7 +102,7 @@ fun ScreenContent(modifier: Modifier = Modifier, navController: NavHostControlle
             modifier = Modifier.wrapContentWidth(),
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF64B5F6)) // Oranye terang
         ) {
-            Text(text = "Hitung Usia di Planet Lain", color = Color.White)
+            Text(text = stringResource(R.string.navigasi_hitung), color = Color.White)
         }
     }
 }
