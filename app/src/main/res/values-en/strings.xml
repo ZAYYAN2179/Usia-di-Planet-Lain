@@ -17,6 +17,7 @@
     <string name="ringkasan_merkurius">One Mercury year: 88 Earth days</string>
     <string name="ringkasan_venus">One Venus year: 225 Earth days</string>
     <string name="ringkasan_mars">One Mars year: 687 Earth days</string>
+    <string name="ringkasan_bumi">One Mars year: 687 Earth days</string>
     <string name="ringkasan_jupiter">One Jupiter year: 4.332 Earth days</string>
     <string name="ringkasan_saturnus">One Saturn year: 10.759 Earth days</string>
     <string name="ringkasan_uranus">One Uranus year: 30.688 Earth days</string>
@@ -34,4 +35,13 @@
     <string name="error_kosong">Please enter your age</string>
     <string name="error_invalid">Enter a valid age value</string>
     <string name="error_negatif">Age must be greater than 0</string>
+    <string name="deskripsi_merkurius">Planet Mercury is the smallest and closest to the Sun.</string>
+    <string name="deskripsi_venus">Planet Venus has the hottest temperature due to its thick carbon dioxide atmosphere.</string>
+    <string name="deskripsi_bumi">Planet Earth is the only place that supports life.</string>
+    <string name="deskripsi_mars">Planet Mars is known as the Red Planet due to its dusty, iron-rich surface.</string>
+    <string name="deskripsi_jupiter">Planet Jupiter is the largest and features a massive storm called the Great Red Spot.</string>
+    <string name="deskripsi_saturnus">Planet Saturn is famous for its spectacular surrounding rings.</string>
+    <string name="deskripsi_uranus">Planet Uranus rotates at an extreme tilt and has a bluish hue.</string>
+    <string name="deskripsi_neptunus">Planet Neptune is known for its fastest winds and deep blue color.</string>
+
 </resources>

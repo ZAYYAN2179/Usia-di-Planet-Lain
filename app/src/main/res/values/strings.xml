@@ -26,6 +26,7 @@
     <string name="ringkasan_merkurius">Satu tahun Merkurius: 88 hari Bumi</string>
     <string name="ringkasan_venus">Satu tahun Venus: 225 hari Bumi</string>
     <string name="ringkasan_mars">Satu tahun Mars: 687 hari Bumi</string>
+    <string name="ringkasan_bumi">Satu tahun Mars: 687 hari Bumi</string>
     <string name="ringkasan_jupiter">Satu tahun Jupiter: 4.332 hari Bumi</string>
     <string name="ringkasan_saturnus">Satu tahun Saturnus: 10.759 hari Bumi</string>
     <string name="ringkasan_uranus">Satu tahun Uranus: 30.688 hari Bumi</string>
@@ -49,5 +50,16 @@
     <string name="error_kosong">Silakan masukkan usia Anda</string>
     <string name="error_invalid">Masukkan nilai usia yang valid</string>
     <string name="error_negatif">Usia harus lebih dari 0</string>
+
+    <!-- Deskripsi Singkat Planet -->
+    <string name="deskripsi_merkurius">Planet Merkurius adalah yang terkecil dan paling dekat dengan Matahari.</string>
+    <string name="deskripsi_venus">Planet Venus memiliki suhu terpanas akibat atmosfer karbon dioksida tebal.</string>
+    <string name="deskripsi_bumi">Planet Bumi merupakan satu-satunya tempat yang mendukung kehidupan.</string>
+    <string name="deskripsi_mars">Planet Mars dijuluki planet merah karena permukaannya yang berdebu dan kaya besi.</string>
+    <string name="deskripsi_jupiter">Planet Jupiter adalah yang terbesar dan memiliki badai raksasa bernama Great Red Spot.</string>
+    <string name="deskripsi_saturnus">Planet Saturnus terkenal dengan cincin spektakuler yang mengelilinginya.</string>
+    <string name="deskripsi_uranus">Planet Uranus berputar dengan kemiringan ekstrem dan memiliki warna kebiruan.</string>
+    <string name="deskripsi_neptunus">Planet Neptunus dikenal dengan angin tercepat dan warna biru laut yang mencolok.</string>
+
 </resources>
 
