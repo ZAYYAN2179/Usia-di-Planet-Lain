@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Age on Another Planet</string>
+    <string name="app_name">AgeXplore Planet</string>
     <string name="tentang_aplikasi">About the App</string>
-    <string name="copyright">Age on Other Planets is an app that allows users to calculate and compare their age on Earth with the age on other planets in the Solar System. Users simply enter their age on Earth, then select the desired planet to see how old they are based on the planet\'s revolution period. The app uses a simple calculation by dividing the age on Earth by the revolution period of each planet.\n\nMuh Zayyan Al Thaaf Nur</string>
-    <string name="navigasi_hitung">Calculate Age on Other Planets</string>
+    <string name="copyright">AgeXplore Planet is an app that allows users to calculate and compare their age on Earth with the age on other planets in the Solar System. Users simply enter their age on Earth, then select the desired planet to see how old they are based on the planet\'s revolution period. The app uses a simple calculation by dividing the age on Earth by the revolution period of each planet.\n\nMuh Zayyan Al Thaaf Nur</string>
+    <string name="navigasi_hitung">Let\'s see your age on another planet!</string>
     <string name="kembali">Back</string>
     <string name="keluar_aplikasi">Exit</string>
     <string name="planet_mercury">Mercury</string>

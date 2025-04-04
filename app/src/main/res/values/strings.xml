@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Usia di Planet Lain</string>
+    <string name="app_name">AgeXplore Planet</string>
     <string name="tentang_aplikasi">Tentang Aplikasi</string>
-    <string name="copyright">Usia di Planet Lain Adalah
+    <string name="copyright">AgeXplore Planet Adalah
         aplikasi yang memungkinkan pengguna menghitung dan
         membandingkan umur mereka di Bumi dengan umur di
         planet lain dalam Tata Surya. Pengguna cukup memasukkan
@@ -10,7 +10,7 @@
         revolusi planet tersebut. Aplikasi ini menggunakan perhitungan
         sederhana dengan membagi umur di Bumi dengan periode revolusi
         masing-masing planet.\n\nMuh Zayyan Al Thaaf Nur</string>
-    <string name="navigasi_hitung">Hitung Usia di Planet Lain</string>
+    <string name="navigasi_hitung">Ayo Lihat Umurmu di Planet Lain!</string>
     <string name="kembali">Kembali</string>
     <string name="keluar_aplikasi">Keluar</string>
 
