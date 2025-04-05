@@ -177,7 +177,7 @@ fun AgeCountScreen(navController: NavHostController) {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFFE3F2FD))
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
                 ) {
                     Column(
                         modifier = Modifier
@@ -216,7 +216,7 @@ fun AgeCountScreen(navController: NavHostController) {
                                     text = "$totalYears ${stringResource(R.string.tahun)}",
                                     fontSize = 24.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = Color(0xFF0D47A1),
+                                    color = MaterialTheme.colorScheme.primary,
                                     modifier = Modifier.fillMaxWidth(),
                                     textAlign = TextAlign.Center
                                 )
@@ -227,7 +227,7 @@ fun AgeCountScreen(navController: NavHostController) {
                                     text = "$totalMonths ${stringResource(R.string.bulan)}",
                                     fontSize = 24.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = Color(0xFF0D47A1),
+                                    color = MaterialTheme.colorScheme.primary,
                                     modifier = Modifier.fillMaxWidth(),
                                     textAlign = TextAlign.Center
                                 )
@@ -238,7 +238,7 @@ fun AgeCountScreen(navController: NavHostController) {
                                     text = "$totalDays ${stringResource(R.string.hari)}",
                                     fontSize = 24.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = Color(0xFF0D47A1),
+                                    color = MaterialTheme.colorScheme.primary,
                                     modifier = Modifier.fillMaxWidth(),
                                     textAlign = TextAlign.Center
                                 )
