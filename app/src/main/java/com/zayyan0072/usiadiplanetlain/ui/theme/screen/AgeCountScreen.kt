@@ -1,5 +1,7 @@
 package com.zayyan0072.usiadiplanetlain.ui.theme.screen
 
+import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -59,6 +61,7 @@ fun AgeCountScreen(navController: NavHostController) {
     var statusHitung by rememberSaveable { mutableStateOf(false) }
     var pesanKesalahan by rememberSaveable { mutableStateOf<String?>(null) }
     val konteks = LocalContext.current
+    val context = LocalContext.current
 
     Scaffold(topBar = {
         TopAppBar(navigationIcon = {
@@ -173,6 +176,8 @@ fun AgeCountScreen(navController: NavHostController) {
 
             Spacer(modifier = Modifier.height(24.dp))
 
+            var formatWaktu by rememberSaveable { mutableStateOf("") }
+
             if (statusHitung && usiaDiPlanetTerpilih != null) {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
@@ -207,13 +212,12 @@ fun AgeCountScreen(navController: NavHostController) {
 
                         val totalYears = floor(usiaDiPlanetTerpilih!!).toInt()
                         val totalMonths = ((usiaDiPlanetTerpilih!! - totalYears) * 12).toInt()
-                        val totalDays =
-                            ((usiaDiPlanetTerpilih!! - totalYears - totalMonths / 12.0) * 365.25).toInt()
-                        // Menampilkan hasil dalam format tahun, bulan, atau hari sesuai kondisi
+                        val totalDays = ((usiaDiPlanetTerpilih!! - totalYears - totalMonths / 12.0) * 365.25).toInt()
                         when {
                             totalYears > 0 -> {
+                                formatWaktu = "$totalYears ${stringResource(R.string.tahun)}"
                                 Text(
-                                    text = "$totalYears ${stringResource(R.string.tahun)}",
+                                    text = formatWaktu,
                                     fontSize = 24.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.primary,
@@ -221,10 +225,10 @@ fun AgeCountScreen(navController: NavHostController) {
                                     textAlign = TextAlign.Center
                                 )
                             }
-
                             totalMonths > 0 -> {
+                                formatWaktu = "$totalMonths ${stringResource(R.string.bulan)}"
                                 Text(
-                                    text = "$totalMonths ${stringResource(R.string.bulan)}",
+                                    text = formatWaktu,
                                     fontSize = 24.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.primary,
@@ -232,10 +236,10 @@ fun AgeCountScreen(navController: NavHostController) {
                                     textAlign = TextAlign.Center
                                 )
                             }
-
                             totalDays > 0 -> {
+                                formatWaktu = "$totalDays ${stringResource(R.string.hari)}"
                                 Text(
-                                    text = "$totalDays ${stringResource(R.string.hari)}",
+                                    text = formatWaktu,
                                     fontSize = 24.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.primary,
@@ -279,9 +283,51 @@ fun AgeCountScreen(navController: NavHostController) {
                     }
                 }
             }
+            if (statusHitung && usiaDiPlanetTerpilih != null) {
+                val planetName = context.getString(planetTerpilih.nameResId)
+                val summary = when (planetDihitung.nameResId) {
+                    R.string.planet_mercury -> context.getString(R.string.ringkasan_merkurius)
+                    R.string.planet_venus -> context.getString(R.string.ringkasan_venus)
+                    R.string.planet_mars -> context.getString(R.string.ringkasan_mars)
+                    R.string.planet_jupiter -> context.getString(R.string.ringkasan_jupiter)
+                    R.string.planet_saturn -> context.getString(R.string.ringkasan_saturnus)
+                    R.string.planet_uranus -> context.getString(R.string.ringkasan_uranus)
+                    R.string.planet_neptune -> context.getString(R.string.ringkasan_neptunus)
+                    else -> ""
+                }
+                Button(
+                    onClick = {
+                        val message = context.getString(
+                            R.string.bagikan_template,
+                            inputUsia,
+                            planetName,
+                            formatWaktu,  // Use formattedTime here instead of String.format
+                            summary
+                        )
+                        shareData(context = context, message = message)
+                    },
+                    modifier = Modifier
+                        .padding(top = 24.dp),
+                    contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF64B5F6))
+
+                ) {
+                    Text(text = stringResource(R.string.bagikan))
+                }
+            }
         }
     }
 }
+
+fun shareData(context: Context, message: String) {
+    val intent = Intent(Intent.ACTION_SEND).apply {
+        type = "text/plain"
+        putExtra(Intent.EXTRA_TEXT, message)
+    }
+    val chooser = Intent.createChooser(intent, context.getString(R.string.bagikan))
+    context.startActivity(chooser)
+}
+
 
 @Preview(showBackground = true)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)

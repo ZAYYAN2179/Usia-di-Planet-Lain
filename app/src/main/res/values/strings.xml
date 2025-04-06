@@ -61,5 +61,10 @@
     <string name="deskripsi_uranus">Planet Uranus berputar dengan kemiringan ekstrem dan memiliki warna kebiruan.</string>
     <string name="deskripsi_neptunus">Planet Neptunus dikenal dengan angin tercepat dan warna biru laut yang mencolok.</string>
 
+    <string name="bagikan">Bagikan</string>
+    <string name="bagikan_template">Jika usia di Bumi adalah %1$s tahun, maka usia di %2$s adalah %3$s\n\n%4$s</string>
+
+
+
 </resources>
 

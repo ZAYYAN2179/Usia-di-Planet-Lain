@@ -43,5 +43,8 @@
     <string name="deskripsi_saturnus">Planet Saturn is famous for its spectacular surrounding rings.</string>
     <string name="deskripsi_uranus">Planet Uranus rotates at an extreme tilt and has a bluish hue.</string>
     <string name="deskripsi_neptunus">Planet Neptune is known for its fastest winds and deep blue color.</string>
+    <string name="bagikan">Share</string>
+    <string name="bagikan_template">If the age on Earth is %1$s years, then the age on %2$s is %3$s\n\n%4$s</string>
+
 
 </resources>
