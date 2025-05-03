@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import com.zayyan0072.usiadiplanetlain.ui.theme.screen.AboutScreen
 import com.zayyan0072.usiadiplanetlain.ui.theme.screen.AgeCountScreen
 import com.zayyan0072.usiadiplanetlain.ui.theme.screen.MainScreen
+import com.zayyan0072.usiadiplanetlain.ui.theme.screen.MissionListScreen
 
 @Composable
 fun SetupNavGraph(navController: NavHostController = rememberNavController()) {
@@ -23,6 +24,9 @@ fun SetupNavGraph(navController: NavHostController = rememberNavController()) {
         }
         composable(route = Screen.Count.route) {
             AgeCountScreen(navController)
+        }
+        composable(route = Screen.MissionList.route) {
+            MissionListScreen(navController)
         }
     }
 }

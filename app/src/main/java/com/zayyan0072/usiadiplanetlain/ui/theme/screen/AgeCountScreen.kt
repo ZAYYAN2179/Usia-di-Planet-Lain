@@ -328,7 +328,6 @@ fun shareData(context: Context, message: String) {
     context.startActivity(chooser)
 }
 
-
 @Preview(showBackground = true)
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
