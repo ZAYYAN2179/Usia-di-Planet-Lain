@@ -46,5 +46,9 @@
     <string name="bagikan">Share</string>
     <string name="bagikan_template">If the age on Earth is %1$s years, then the age on %2$s is %3$s\n\n%4$s</string>
     <string name="tampilan_misi">Mission Note</string>
-    <string name="navigasi_misi">Mission note</string>
+    <string name="navigasi_misi">Mission Note</string>
+    <string name="list_kosong">Data Empty</string>
+    <string name="x_diklik">%1$s click</string>
+    <string name="tambah_misi">Add mission</string>
+    <string name="belum_bisa">Cannot add missions yet</string>
 </resources>

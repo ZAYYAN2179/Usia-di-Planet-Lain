@@ -11,7 +11,7 @@
         sederhana dengan membagi umur di Bumi dengan periode revolusi
         masing-masing planet.\n\nMuh Zayyan Al Thaaf Nur</string>
     <string name="navigasi_hitung">Ayo Lihat Umurmu di Planet Lain!</string>
-    <string name="navigasi_misi">Catatan misi</string>
+    <string name="navigasi_misi">Catatan Misi</string>
     <string name="kembali">Kembali</string>
     <string name="keluar_aplikasi">Keluar</string>
 
@@ -67,5 +67,9 @@
 
     <!-- String XML di screen misi -->
     <string name="tampilan_misi">Catatan Misi</string>
+    <string name="list_kosong">Belum ada data</string>
+    <string name="x_diklik">%1$s diklik!</string>
+    <string name="tambah_misi">Tambah misi</string>
+    <string name="belum_bisa">Belum bisa tambah misi.</string>
 </resources>
 
