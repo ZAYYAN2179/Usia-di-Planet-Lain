@@ -33,4 +33,8 @@ class MainViewModel : ViewModel() {
             "Struktur cincin memberikan informasi tentang pembentukan planet. "
         )
     )
+
+    fun getMission(id: Long): Mission? {
+        return data.find { it.id == id }
+    }
 }

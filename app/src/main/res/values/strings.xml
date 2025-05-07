@@ -70,6 +70,34 @@
     <string name="list_kosong">Belum ada data</string>
     <string name="x_diklik">%1$s diklik!</string>
     <string name="tambah_misi">Tambah misi</string>
-    <string name="belum_bisa">Belum bisa tambah misi.</string>
+    <string name="tanggal_misi">Tanggal Misi</string>
+    <string name="tipe_misi">Tipe Misi</string>
+    <string name="penemuan">Penemuan Menarik</string>
+    <string name="tantangan">Tantangan</string>
+    <string name="insight">Insight Penjelajahan</string>
+    <string name="simpan">Simpan</string>
+    <string name="edit_misi">Edit Misi</string>
+    <string name="planet">Planet</string>
+
+    <string name="observasi">Observasi</string>
+    <string name="eksperimen">Eksperimen</string>
+    <string name="eksplorasi_permukaan">Eksplorasi Permukaan</string>
+
+    <string-array name="tipe_misi_array">
+        <item>Observasi</item>
+        <item>Eksperimen</item>
+        <item>Eksplorasi Permukaan</item>
+    </string-array>
+
+    <string-array name="planet_list">
+        <item>@string/planet_mercury</item>
+        <item>@string/planet_venus</item>
+        <item>@string/planet_earth</item>
+        <item>@string/planet_mars</item>
+        <item>@string/planet_jupiter</item>
+        <item>@string/planet_saturn</item>
+        <item>@string/planet_uranus</item>
+        <item>@string/planet_neptune</item>
+    </string-array>
 </resources>
 

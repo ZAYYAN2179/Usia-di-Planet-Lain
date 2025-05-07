@@ -50,5 +50,15 @@
     <string name="list_kosong">Data Empty</string>
     <string name="x_diklik">%1$s click</string>
     <string name="tambah_misi">Add mission</string>
-    <string name="belum_bisa">Cannot add missions yet</string>
+    <string name="tanggal_misi">Mission Date</string>
+    <string name="penemuan">Interesting Discovery</string>
+    <string name="tantangan">Mission Challenge</string>
+    <string name="insight">Exploration Insight</string>
+    <string name="simpan">Save</string>
+    <string name="tipe_misi">Type Mission</string>
+    <string name="edit_misi">Edit Mission</string>
+    <string name="planet">Planet</string>
+    <string name="observasi">Observation</string>
+    <string name="eksperimen">Experiment</string>
+    <string name="eksplorasi_permukaan">Surface Exploration</string>
 </resources>
