@@ -40,9 +40,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -64,12 +61,17 @@ import com.zayyan0072.usiadiplanetlain.model.MainViewModel
 import com.zayyan0072.usiadiplanetlain.model.Mission
 import com.zayyan0072.usiadiplanetlain.navigation.Screen
 import com.zayyan0072.usiadiplanetlain.ui.theme.UsiaDiPlanetLainTheme
+import com.zayyan0072.usiadiplanetlain.util.SettingDataStore
 import com.zayyan0072.usiadiplanetlain.util.ViewModelFactory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MissionListScreen(navController: NavHostController) {
-    var showList by remember { mutableStateOf(true) }
+    val dataStore = SettingDataStore(LocalContext.current)
+    val showList by dataStore.layoutFlow.collectAsState(true)
 
     Scaffold(topBar = {
         TopAppBar(
@@ -89,7 +91,11 @@ fun MissionListScreen(navController: NavHostController) {
                 containerColor = Color(0xFF0D47A1), titleContentColor = Color.White
             ),
             actions = {
-                IconButton(onClick = { showList = !showList }) {
+                IconButton(onClick = {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        dataStore.saveLayout(!showList)
+                    }
+                }) {
                     Icon(
                         painter = painterResource(
                             if (showList) R.drawable.baseline_grid_view_24

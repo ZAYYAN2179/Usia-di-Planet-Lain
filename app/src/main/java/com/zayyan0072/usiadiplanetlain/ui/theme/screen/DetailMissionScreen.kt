@@ -79,7 +79,7 @@ fun DetailMission(navController: NavHostController, id: Long? = null) {
         topBar = {
             TopAppBar(
                 navigationIcon = {
-                    IconButton(onClick = {navController.popBackStack()}) {
+                    IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.kembali),
@@ -89,7 +89,7 @@ fun DetailMission(navController: NavHostController, id: Long? = null) {
                 },
                 title = {
                     if (id == null)
-                    Text(text = stringResource(id = R.string.tambah_misi))
+                        Text(text = stringResource(id = R.string.tambah_misi))
                     else
                         Text(text = stringResource(id = R.string.edit_misi))
                 },
@@ -103,11 +103,27 @@ fun DetailMission(navController: NavHostController, id: Long? = null) {
                             return@IconButton
                         }
                         if (id == null) {
-                            viewModel.insert(planet, tanggalMisi, tipeMisi, penemuan, tantangan, insight)
+                            viewModel.insert(
+                                planet,
+                                tanggalMisi,
+                                tipeMisi,
+                                penemuan,
+                                tantangan,
+                                insight
+                            )
                         } else {
-                            viewModel.update(id, planet, tanggalMisi, tipeMisi, penemuan, tantangan, insight)
+                            viewModel.update(
+                                id,
+                                planet,
+                                tanggalMisi,
+                                tipeMisi,
+                                penemuan,
+                                tantangan,
+                                insight
+                            )
                         }
-                        navController.popBackStack()}) {
+                        navController.popBackStack()
+                    }) {
                         Icon(
                             imageVector = Icons.Outlined.Check,
                             contentDescription = stringResource(R.string.simpan),
@@ -141,7 +157,7 @@ fun DetailMission(navController: NavHostController, id: Long? = null) {
 
         if (id != null && showDialog) {
             DisplayAlertDialog(
-                onDismissRequest = {showDialog = false}) {
+                onDismissRequest = { showDialog = false }) {
                 showDialog = false
                 viewModel.delete(id)
                 navController.popBackStack()
@@ -154,7 +170,7 @@ fun DetailMission(navController: NavHostController, id: Long? = null) {
 fun DeleteAction(delete: () -> Unit) {
     var expanded by remember { mutableStateOf(false) }
 
-    IconButton(onClick = {expanded = true}) {
+    IconButton(onClick = { expanded = true }) {
         Icon(
             imageVector = Icons.Filled.MoreVert,
             contentDescription = stringResource(R.string.lainnya),
@@ -162,7 +178,7 @@ fun DeleteAction(delete: () -> Unit) {
         )
         DropdownMenu(
             expanded = expanded,
-            onDismissRequest = {expanded = false}
+            onDismissRequest = { expanded = false }
         ) {
             DropdownMenuItem(
                 text = {
@@ -210,7 +226,6 @@ fun FormMission(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // Dropdown Planet
         ExposedDropdownMenuBox(
             expanded = expandedPlanet,
             onExpandedChange = { expandedPlanet = !expandedPlanet }
@@ -223,7 +238,9 @@ fun FormMission(
                 trailingIcon = {
                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedPlanet)
                 },
-                modifier = Modifier.menuAnchor().fillMaxWidth()
+                modifier = Modifier
+                    .menuAnchor()
+                    .fillMaxWidth()
             )
             ExposedDropdownMenu(
                 expanded = expandedPlanet,
@@ -241,16 +258,14 @@ fun FormMission(
             }
         }
 
-        // Tanggal Misi
         OutlinedTextField(
             value = tanggalMisi,
             onValueChange = onTanggalMisiChange,
-            label = { Text (text = stringResource(R.string.tanggal_misi)) },
+            label = { Text(text = stringResource(R.string.tanggal_misi)) },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
 
-        // Dropdown Tipe Misi
         ExposedDropdownMenuBox(
             expanded = expandedTipe,
             onExpandedChange = { expandedTipe = !expandedTipe }
@@ -263,7 +278,9 @@ fun FormMission(
                 trailingIcon = {
                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedTipe)
                 },
-                modifier = Modifier.menuAnchor().fillMaxWidth()
+                modifier = Modifier
+                    .menuAnchor()
+                    .fillMaxWidth()
             )
             ExposedDropdownMenu(
                 expanded = expandedTipe,
@@ -281,7 +298,6 @@ fun FormMission(
             }
         }
 
-        // Penemuan Menarik
         OutlinedTextField(
             value = penemuan,
             onValueChange = onPenemuanChange,
@@ -293,7 +309,6 @@ fun FormMission(
             )
         )
 
-        // Tantangan
         OutlinedTextField(
             value = tantangan,
             onValueChange = onTantanganChange,
@@ -305,7 +320,6 @@ fun FormMission(
             )
         )
 
-        // Insight Penjelajahan
         OutlinedTextField(
             value = insight,
             onValueChange = onInsightChange,

@@ -34,7 +34,6 @@ data class Planet(
     val nameResId: Int, val revolutionPeriod: Double
 )
 
-// Membuat Saver untuk Planet
 val PlanetSaver = listSaver<Planet, Any>(
     save = { listOf(it.nameResId, it.revolutionPeriod) },
     restore = { Planet(it[0] as Int, it[1] as Double) }
@@ -212,7 +211,8 @@ fun AgeCountScreen(navController: NavHostController) {
 
                         val totalYears = floor(usiaDiPlanetTerpilih!!).toInt()
                         val totalMonths = ((usiaDiPlanetTerpilih!! - totalYears) * 12).toInt()
-                        val totalDays = ((usiaDiPlanetTerpilih!! - totalYears - totalMonths / 12.0) * 365.25).toInt()
+                        val totalDays =
+                            ((usiaDiPlanetTerpilih!! - totalYears - totalMonths / 12.0) * 365.25).toInt()
                         when {
                             totalYears > 0 -> {
                                 formatWaktu = "$totalYears ${stringResource(R.string.tahun)}"
@@ -225,6 +225,7 @@ fun AgeCountScreen(navController: NavHostController) {
                                     textAlign = TextAlign.Center
                                 )
                             }
+
                             totalMonths > 0 -> {
                                 formatWaktu = "$totalMonths ${stringResource(R.string.bulan)}"
                                 Text(
@@ -236,6 +237,7 @@ fun AgeCountScreen(navController: NavHostController) {
                                     textAlign = TextAlign.Center
                                 )
                             }
+
                             totalDays > 0 -> {
                                 formatWaktu = "$totalDays ${stringResource(R.string.hari)}"
                                 Text(
@@ -260,7 +262,6 @@ fun AgeCountScreen(navController: NavHostController) {
                             R.string.planet_neptune -> stringResource(R.string.ringkasan_neptunus)
                             else -> ""
                         }
-                        // Menampilkan ringkasan waktu planet
                         Text(
                             text = planetSummary,
                             textAlign = TextAlign.Center,
@@ -301,7 +302,7 @@ fun AgeCountScreen(navController: NavHostController) {
                             R.string.bagikan_template,
                             inputUsia,
                             planetName,
-                            formatWaktu,  // Use formattedTime here instead of String.format
+                            formatWaktu,
                             summary
                         )
                         shareData(context = context, message = message)

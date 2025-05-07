@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.zayyan0072.usiadiplanetlain.model.Mission
 
 @Database(entities = [Mission::class], version = 1, exportSchema = false)
-abstract class MissionDb: RoomDatabase() {
+abstract class MissionDb : RoomDatabase() {
 
     abstract val dao: MissionDao
 

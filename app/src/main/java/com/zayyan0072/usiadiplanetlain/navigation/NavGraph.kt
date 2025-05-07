@@ -38,10 +38,9 @@ fun SetupNavGraph(navController: NavHostController = rememberNavController()) {
         composable(
             route = Screen.FormEdit.route,
             arguments = listOf(
-                navArgument(KEY_ID_MISSION) {type = NavType.LongType}
+                navArgument(KEY_ID_MISSION) { type = NavType.LongType }
             )
-        ) {
-            navBackStackEntry ->
+        ) { navBackStackEntry ->
             val id = navBackStackEntry.arguments?.getLong(KEY_ID_MISSION)
             DetailMission(navController, id)
         }
