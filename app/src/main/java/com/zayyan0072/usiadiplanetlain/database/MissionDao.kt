@@ -21,4 +21,7 @@ interface MissionDao {
 
     @Query("SELECT * FROM mission WHERE id = :id")
     suspend fun getMissionById(id: Long): Mission?
+
+    @Query("DELETE FROM mission WHERE id = :id")
+    suspend fun deleteById(id: Long)
 }

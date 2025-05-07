@@ -76,7 +76,7 @@
     <string name="tantangan">Tantangan</string>
     <string name="insight">Insight Penjelajahan</string>
     <string name="simpan">Simpan</string>
-    <string name="edit_misi">Edit Misi</string>
+    <string name="edit_misi">Edit Catatan Misi</string>
     <string name="planet">Planet</string>
 
     <string name="observasi">Observasi</string>
@@ -101,6 +101,10 @@
     </string-array>
 
     <string name="invalid">Isian tidak boleh kosong</string>
-
+    <string name="lainnya">Opsi lainnya</string>
+    <string name="hapus">Hapus catatan</string>
+    <string name="pesan_hapus">Hapus catatan misi ini?</string>
+    <string name="tombol_hapus">Hapus</string>
+    <string name="tombol_batal">Batal</string>
 </resources>
 

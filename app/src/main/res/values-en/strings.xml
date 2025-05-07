@@ -56,10 +56,16 @@
     <string name="insight">Exploration Insight</string>
     <string name="simpan">Save</string>
     <string name="tipe_misi">Type Mission</string>
-    <string name="edit_misi">Edit Mission</string>
+    <string name="edit_misi">Edit Mission Note</string>
     <string name="planet">Planet</string>
     <string name="observasi">Observation</string>
     <string name="eksperimen">Experiment</string>
     <string name="eksplorasi_permukaan">Surface Exploration</string>
     <string name="invalid">Entries cannot be empty</string>
+    <string name="lainnya">Other Option</string>
+    <string name="hapus">Delete Record</string>
+    <string name="pesan_hapus">Delete this mission record?</string>
+    <string name="tombol_hapus">Delete</string>
+    <string name="tombol_batal">Cancel</string>
+
 </resources>
