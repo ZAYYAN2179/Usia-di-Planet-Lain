@@ -1,6 +1,7 @@
 package com.zayyan0072.usiadiplanetlain.ui.theme.screen
 
 import android.content.res.Configuration
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,6 +16,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
@@ -22,8 +26,10 @@ import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -34,14 +40,19 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -58,6 +69,8 @@ import com.zayyan0072.usiadiplanetlain.util.ViewModelFactory
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MissionListScreen(navController: NavHostController) {
+    var showList by remember { mutableStateOf(true) }
+
     Scaffold(topBar = {
         TopAppBar(
             navigationIcon = {
@@ -75,6 +88,21 @@ fun MissionListScreen(navController: NavHostController) {
             colors = TopAppBarDefaults.mediumTopAppBarColors(
                 containerColor = Color(0xFF0D47A1), titleContentColor = Color.White
             ),
+            actions = {
+                IconButton(onClick = { showList = !showList }) {
+                    Icon(
+                        painter = painterResource(
+                            if (showList) R.drawable.baseline_grid_view_24
+                            else R.drawable.baseline_view_list_24
+                        ),
+                        contentDescription = stringResource(
+                            if (showList) R.string.tampilan_grid
+                            else R.string.tampilan_list
+                        ),
+                        tint = Color.White
+                    )
+                }
+            }
         )
     },
         floatingActionButton = {
@@ -92,14 +120,16 @@ fun MissionListScreen(navController: NavHostController) {
             }
         }
     ) { innerPadding ->
-        MissionListScreenContent(
-            modifier = Modifier.padding(innerPadding),navController
-        )
+        MissionListScreenContent(showList, Modifier.padding(innerPadding), navController)
     }
 }
 
 @Composable
-fun MissionListScreenContent(modifier: Modifier = Modifier, navController: NavHostController) {
+fun MissionListScreenContent(
+    showList: Boolean,
+    modifier: Modifier = Modifier,
+    navController: NavHostController
+) {
     val context = LocalContext.current
     val factory = ViewModelFactory(context)
     val viewModel: MainViewModel = viewModel(factory = factory)
@@ -108,16 +138,32 @@ fun MissionListScreenContent(modifier: Modifier = Modifier, navController: NavHo
     if (data.isEmpty()) {
         Text(text = "data kosong")
     } else {
-        LazyColumn(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(bottom = 84.dp)
-        ) {
-            items(data) {
-                MissionList(mission = it) {
-                   navController.navigate(Screen.FormEdit.withId(it.id))
+        if (showList) {
+            LazyColumn(
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = PaddingValues(bottom = 84.dp)
+            ) {
+                items(data) {
+                    MissionList(mission = it) {
+                        navController.navigate(Screen.FormEdit.withId(it.id))
+                    }
+                }
+            }
+        } else {
+            LazyVerticalStaggeredGrid(
+                modifier = modifier.fillMaxSize(),
+                columns = StaggeredGridCells.Fixed(2),
+                verticalItemSpacing = 8.dp,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = PaddingValues(8.dp, 8.dp, 8.dp, 84.dp)
+            ) {
+                items(data) {
+                    GridItem(mission = it) {
+                        navController.navigate(Screen.FormEdit.withId(it.id))
+                    }
                 }
             }
         }
@@ -224,6 +270,84 @@ fun MissionInfoItem(icon: ImageVector, label: String, value: String) {
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = 15.sp
         )
+    }
+}
+
+@Composable
+fun GridItem(mission: Mission, onClick: () -> Unit) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+            .clickable { onClick() },
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        border = BorderStroke(1.dp, DividerDefaults.color)
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            Text(
+                text = mission.namaPlanet,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Text(
+                text = "Tanggal: ${mission.tanggalMisi}",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Text(
+                text = "Tipe Misi: ${mission.tipeMisi}",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            HorizontalDivider()
+
+            Text(
+                text = "Penemuan:",
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.SemiBold
+            )
+            Text(
+                text = mission.penemuan,
+                style = MaterialTheme.typography.bodySmall,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Justify
+            )
+
+            Text(
+                text = "Tantangan:",
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.SemiBold
+            )
+            Text(
+                text = mission.tantangan,
+                style = MaterialTheme.typography.bodySmall,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Justify
+            )
+
+            Text(
+                text = "Insight:",
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.SemiBold
+            )
+            Text(
+                text = mission.insightPenjelajahan,
+                style = MaterialTheme.typography.bodySmall,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Justify
+            )
+        }
     }
 }
 

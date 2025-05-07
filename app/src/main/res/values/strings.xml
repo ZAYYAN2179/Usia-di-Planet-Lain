@@ -106,5 +106,7 @@
     <string name="pesan_hapus">Hapus catatan misi ini?</string>
     <string name="tombol_hapus">Hapus</string>
     <string name="tombol_batal">Batal</string>
+    <string name="tampilan_list">Tampilan list</string>
+    <string name="tampilan_grid">Tampilan grid</string>
 </resources>
 
