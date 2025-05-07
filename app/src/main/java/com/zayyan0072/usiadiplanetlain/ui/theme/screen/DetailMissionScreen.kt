@@ -1,6 +1,7 @@
 package com.zayyan0072.usiadiplanetlain.ui.theme.screen
 
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -39,15 +41,18 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.zayyan0072.usiadiplanetlain.R
-import com.zayyan0072.usiadiplanetlain.model.MainViewModel
+import com.zayyan0072.usiadiplanetlain.model.DetailViewModel
 import com.zayyan0072.usiadiplanetlain.ui.theme.UsiaDiPlanetLainTheme
+import com.zayyan0072.usiadiplanetlain.util.ViewModelFactory
 
 const val KEY_ID_MISSION = "idMission"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailMission(navController: NavHostController, id: Long? = null) {
-    val viewModel: MainViewModel = viewModel()
+    val context = LocalContext.current
+    val factory = ViewModelFactory(context)
+    val viewModel: DetailViewModel = viewModel(factory = factory)
 
     var planet by remember { mutableStateOf("") }
     var tanggalMisi by remember { mutableStateOf("") }
@@ -89,7 +94,17 @@ fun DetailMission(navController: NavHostController, id: Long? = null) {
                     containerColor = Color(0xFF0D47A1), titleContentColor = Color.White
                 ),
                 actions = {
-                    IconButton(onClick = {navController.popBackStack()}) {
+                    IconButton(onClick = {
+                        if (planet == "" || tanggalMisi == "" || tipeMisi == "" || penemuan == "" || insight == "") {
+                            Toast.makeText(context, R.string.invalid, Toast.LENGTH_LONG).show()
+                            return@IconButton
+                        }
+                        if (id == null) {
+                            viewModel.insert(planet, tanggalMisi, tipeMisi, penemuan, tantangan, insight)
+                        } else {
+                            viewModel.update(id, planet, tanggalMisi, tipeMisi, penemuan, tantangan, insight)
+                        }
+                        navController.popBackStack()}) {
                         Icon(
                             imageVector = Icons.Outlined.Check,
                             contentDescription = stringResource(R.string.simpan),

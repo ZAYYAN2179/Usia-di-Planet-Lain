@@ -61,4 +61,5 @@
     <string name="observasi">Observation</string>
     <string name="eksperimen">Experiment</string>
     <string name="eksplorasi_permukaan">Surface Exploration</string>
+    <string name="invalid">Entries cannot be empty</string>
 </resources>

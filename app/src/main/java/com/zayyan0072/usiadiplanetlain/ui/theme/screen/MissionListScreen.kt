@@ -32,10 +32,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -50,6 +53,7 @@ import com.zayyan0072.usiadiplanetlain.model.MainViewModel
 import com.zayyan0072.usiadiplanetlain.model.Mission
 import com.zayyan0072.usiadiplanetlain.navigation.Screen
 import com.zayyan0072.usiadiplanetlain.ui.theme.UsiaDiPlanetLainTheme
+import com.zayyan0072.usiadiplanetlain.util.ViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -96,8 +100,10 @@ fun MissionListScreen(navController: NavHostController) {
 
 @Composable
 fun MissionListScreenContent(modifier: Modifier = Modifier, navController: NavHostController) {
-    val viewModel: MainViewModel = viewModel()
-    val data = viewModel.data
+    val context = LocalContext.current
+    val factory = ViewModelFactory(context)
+    val viewModel: MainViewModel = viewModel(factory = factory)
+    val data by viewModel.data.collectAsState()
 
     if (data.isEmpty()) {
         Text(text = "data kosong")

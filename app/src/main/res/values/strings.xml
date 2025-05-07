@@ -99,5 +99,8 @@
         <item>@string/planet_uranus</item>
         <item>@string/planet_neptune</item>
     </string-array>
+
+    <string name="invalid">Isian tidak boleh kosong</string>
+
 </resources>
 
