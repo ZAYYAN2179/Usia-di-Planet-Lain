@@ -12,5 +12,7 @@ data class Mission(
     val tipeMisi: String,
     val penemuan: String,
     val tantangan: String,
-    val insightPenjelajahan: String
+    val insightPenjelajahan: String,
+    val isDeleted: Boolean = false
 )
+

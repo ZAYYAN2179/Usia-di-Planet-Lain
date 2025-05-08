@@ -102,11 +102,21 @@
 
     <string name="invalid">Isian tidak boleh kosong</string>
     <string name="lainnya">Opsi lainnya</string>
-    <string name="hapus">Hapus catatan</string>
-    <string name="pesan_hapus">Hapus catatan misi ini?</string>
-    <string name="tombol_hapus">Hapus</string>
-    <string name="tombol_batal">Batal</string>
     <string name="tampilan_list">Tampilan list</string>
     <string name="tampilan_grid">Tampilan grid</string>
+
+    <string name="alert_title_hapus_misi">Hapus Misi</string>
+    <string name="alert_text_hapus_misi">Yakin ingin menghapus misi ini? Data akan masuk ke keranjang sampah.</string>
+    <string name="tombol_hapus">Hapus</string>
+    <string name="tombol_batal">Batal</string>
+    <string name="toast_misi_dihapus">Misi telah dihapus dan masuk ke keranjang sampah</string>
+    <string name="keranjang_sampah">Keranjang Sampah</string>
+    <string name="kosongkan_recycleBin">Kosongkan Keranjang Sampah</string>
+    <string name="keranjang_sampah_kosong">Keranjang Sampah Kosong</string>
+    <string name="recycleBin_teks">Apakah Anda yakin ingin menghapus semua misi dari keranjang sampah secara permanen?</string>
+    <string name="recycleBin_teksCard">Apakah Anda yakin ingin menghapus misi ini secara permanen?</string>
+    <string name="ya_kosongkan">Yes, clear</string>
+    <string name="pulihkan">Pulihkan</string>
+    <string name="hapus_permanen">Hapus Permanen</string>
 </resources>
 

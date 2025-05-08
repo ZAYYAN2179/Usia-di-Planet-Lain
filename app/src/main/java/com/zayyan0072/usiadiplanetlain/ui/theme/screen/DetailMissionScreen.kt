@@ -12,6 +12,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Check
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -157,11 +160,20 @@ fun DetailMission(navController: NavHostController, id: Long? = null) {
 
         if (id != null && showDialog) {
             DisplayAlertDialog(
-                onDismissRequest = { showDialog = false }) {
-                showDialog = false
-                viewModel.delete(id)
-                navController.popBackStack()
-            }
+                onDismissRequest = { showDialog = false },
+                onConfirmation = {
+                    showDialog = false
+                    viewModel.softDelete(id)
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.toast_misi_dihapus),
+                        Toast.LENGTH_LONG
+                    ).show()
+                    navController.popBackStack()
+                },
+                title = stringResource(R.string.alert_title_hapus_misi),
+                text = stringResource(R.string.alert_text_hapus_misi)
+            )
         }
     }
 }
@@ -182,7 +194,7 @@ fun DeleteAction(delete: () -> Unit) {
         ) {
             DropdownMenuItem(
                 text = {
-                    Text(text = stringResource(id = R.string.hapus))
+                    Text(text = stringResource(id = R.string.alert_title_hapus_misi))
                 },
                 onClick = {
                     expanded = false
@@ -191,6 +203,36 @@ fun DeleteAction(delete: () -> Unit) {
             )
         }
     }
+}
+
+@Composable
+fun DisplayAlertDialog(
+    onDismissRequest: () -> Unit,
+    onConfirmation: () -> Unit,
+    title: String,
+    text: String,
+) {
+    AlertDialog(
+        title = { Text(text = title) },
+        text = { Text(text = text) },
+        onDismissRequest = onDismissRequest,
+        confirmButton = {
+            Button(
+                onClick = onConfirmation,
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0D47A1))
+            ) {
+                Text(text = stringResource(R.string.tombol_hapus))
+            }
+        },
+        dismissButton = {
+            Button(
+                onClick = onDismissRequest,
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)
+            ) {
+                Text(text = stringResource(R.string.tombol_batal))
+            }
+        }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

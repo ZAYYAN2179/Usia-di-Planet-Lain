@@ -11,4 +11,5 @@ sealed class Screen(val route: String) {
     data object FormEdit: Screen("detailMissionScreen/{$KEY_ID_MISSION}") {
         fun withId(id: Long) = "detailMissionScreen/$id"
     }
+    data object RecycleBin: Screen("recycleBinScreen")
 }

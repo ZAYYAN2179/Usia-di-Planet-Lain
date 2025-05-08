@@ -13,6 +13,7 @@ import com.zayyan0072.usiadiplanetlain.ui.theme.screen.DetailMission
 import com.zayyan0072.usiadiplanetlain.ui.theme.screen.KEY_ID_MISSION
 import com.zayyan0072.usiadiplanetlain.ui.theme.screen.MainScreen
 import com.zayyan0072.usiadiplanetlain.ui.theme.screen.MissionListScreen
+import com.zayyan0072.usiadiplanetlain.ui.theme.screen.RecycleBinScreen
 
 @Composable
 fun SetupNavGraph(navController: NavHostController = rememberNavController()) {
@@ -43,6 +44,9 @@ fun SetupNavGraph(navController: NavHostController = rememberNavController()) {
         ) { navBackStackEntry ->
             val id = navBackStackEntry.arguments?.getLong(KEY_ID_MISSION)
             DetailMission(navController, id)
+        }
+        composable(route = Screen.RecycleBin.route) {
+            RecycleBinScreen(navController)
         }
     }
 }

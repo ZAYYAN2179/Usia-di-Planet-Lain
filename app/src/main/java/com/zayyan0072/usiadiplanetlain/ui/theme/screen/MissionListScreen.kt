@@ -23,6 +23,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -91,6 +92,7 @@ fun MissionListScreen(navController: NavHostController) {
                 containerColor = Color(0xFF0D47A1), titleContentColor = Color.White
             ),
             actions = {
+                // Button untuk layout toggle (grid/list view)
                 IconButton(onClick = {
                     CoroutineScope(Dispatchers.IO).launch {
                         dataStore.saveLayout(!showList)
@@ -105,6 +107,16 @@ fun MissionListScreen(navController: NavHostController) {
                             if (showList) R.string.tampilan_grid
                             else R.string.tampilan_list
                         ),
+                        tint = Color.White
+                    )
+                }
+
+                IconButton(onClick = {
+                    navController.navigate(Screen.RecycleBin.route)
+                }) {
+                    Icon(
+                        imageVector = Icons.Filled.Delete,
+                        contentDescription = stringResource(R.string.app_name),
                         tint = Color.White
                     )
                 }
@@ -200,19 +212,19 @@ fun MissionList(mission: Mission, onClick: () -> Unit) {
 
             MissionInfoItem(
                 icon = Icons.Default.DateRange,
-                label = "Tanggal Misi",
+                label = stringResource(R.string.tanggal_misi),
                 value = mission.tanggalMisi
             )
 
             MissionInfoItem(
                 icon = Icons.Default.Search,
-                label = "Tipe Misi",
+                label = stringResource(R.string.tipe_misi),
                 value = mission.tipeMisi
             )
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "Penemuan Menarik:",
+                text = (stringResource(R.string.penemuan)),
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 15.sp
@@ -225,7 +237,7 @@ fun MissionList(mission: Mission, onClick: () -> Unit) {
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = "Tantangan:",
+                text = (stringResource(R.string.tantangan)),
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 15.sp
@@ -238,7 +250,7 @@ fun MissionList(mission: Mission, onClick: () -> Unit) {
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = "Insight Penjelajahan:",
+                text = (stringResource(R.string.insight)),
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 15.sp
@@ -304,19 +316,33 @@ fun GridItem(mission: Mission, onClick: () -> Unit) {
                 color = MaterialTheme.colorScheme.primary
             )
             Text(
-                text = "Tanggal: ${mission.tanggalMisi}",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurface
+                text = "${stringResource(R.string.tanggal_misi)}:",
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.SemiBold
             )
             Text(
-                text = "Tipe Misi: ${mission.tipeMisi}",
+                text = mission.tanggalMisi,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurface
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Justify
+            )
+            Text(
+                text = "${stringResource(R.string.tipe_misi)}:",
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.SemiBold
+            )
+            Text(
+                text = mission.tipeMisi,
+                style = MaterialTheme.typography.bodySmall,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Justify
             )
             HorizontalDivider()
 
             Text(
-                text = "Penemuan:",
+                text = "${stringResource(R.string.penemuan)}:",
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.SemiBold
             )
@@ -329,7 +355,7 @@ fun GridItem(mission: Mission, onClick: () -> Unit) {
             )
 
             Text(
-                text = "Tantangan:",
+                text = "${stringResource(R.string.tantangan)}:",
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.SemiBold
             )
@@ -342,7 +368,7 @@ fun GridItem(mission: Mission, onClick: () -> Unit) {
             )
 
             Text(
-                text = "Insight:",
+                text = "${stringResource(R.string.insight)}:",
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.SemiBold
             )

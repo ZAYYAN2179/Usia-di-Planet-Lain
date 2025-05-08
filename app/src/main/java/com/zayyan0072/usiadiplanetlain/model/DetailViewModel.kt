@@ -22,7 +22,8 @@ class DetailViewModel(private val dao: MissionDao) : ViewModel() {
             tipeMisi = tipeMisi,
             penemuan = penemuan,
             tantangan = tantangan,
-            insightPenjelajahan = insightPenjelajahan
+            insightPenjelajahan = insightPenjelajahan,
+            isDeleted = false
         )
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -50,7 +51,8 @@ class DetailViewModel(private val dao: MissionDao) : ViewModel() {
             tipeMisi = tipeMisi,
             penemuan = penemuan,
             tantangan = tantangan,
-            insightPenjelajahan = insightPenjelajahan
+            insightPenjelajahan = insightPenjelajahan,
+            isDeleted = false
         )
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -58,9 +60,9 @@ class DetailViewModel(private val dao: MissionDao) : ViewModel() {
         }
     }
 
-    fun delete(id: Long) {
+    fun softDelete(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            dao.deleteById(id)
+            dao.softDeleteById(id)
         }
     }
 }
