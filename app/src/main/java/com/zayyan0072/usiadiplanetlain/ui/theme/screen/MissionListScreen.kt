@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -22,6 +23,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
@@ -92,7 +94,6 @@ fun MissionListScreen(navController: NavHostController) {
                 containerColor = Color(0xFF0D47A1), titleContentColor = Color.White
             ),
             actions = {
-                // Button untuk layout toggle (grid/list view)
                 IconButton(onClick = {
                     CoroutineScope(Dispatchers.IO).launch {
                         dataStore.saveLayout(!showList)
@@ -154,7 +155,30 @@ fun MissionListScreenContent(
     val data by viewModel.data.collectAsState()
 
     if (data.isEmpty()) {
-        Text(text = "data kosong")
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Close,
+                    contentDescription = null,
+                    modifier = Modifier.size(100.dp),
+                    tint = Color.Gray
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = stringResource(R.string.data_kosong),
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = Color.Gray
+                )
+            }
+        }
     } else {
         if (showList) {
             LazyColumn(

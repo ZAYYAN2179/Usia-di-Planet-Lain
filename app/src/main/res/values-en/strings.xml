@@ -2,7 +2,18 @@
 <resources>
     <string name="app_name">AgeXplore Planet</string>
     <string name="tentang_aplikasi">About the App</string>
-    <string name="copyright">AgeXplore Planet is an app that allows users to calculate and compare their age on Earth with the age on other planets in the Solar System. Users simply enter their age on Earth, then select the desired planet to see how old they are based on the planet\'s revolution period. The app uses a simple calculation by dividing the age on Earth by the revolution period of each planet.\n\nMuh Zayyan Al Thaaf Nur</string>
+    <string name="copyright">AgeXplore Planet is an app
+        that allows users to calculate and compare their age
+        on Earth with the age on other planets in the Solar System.
+        Users simply enter their age on Earth, then select the desired
+        planet to see how old they are based on the planet\'s revolution period.
+        The app uses a simple calculation by dividing the age on Earth by the
+        revolution period of each planet.\n\nIn addition, the app also
+        provides a feature to log space exploration missions to various planets.
+        Users can create a mission log that includes the name of the destination planet,
+        mission date, mission type (Observation, Experimentation, or Surface Exploration),
+        discoveries made, challenges faced, and insights or lessons learned
+        from the exploration.\n\nMuh Zayyan Al Thaaf Nur</string>
     <string name="navigasi_hitung">Let\'s see your age on another planet!</string>
     <string name="kembali">Back</string>
     <string name="keluar_aplikasi">Exit</string>
@@ -78,4 +89,5 @@
     <string name="pulihkan">Undo</string>
     <string name="hapus_permanen">Permanent Delete</string>
     <string name="recycleBin_teksCard">Are you sure you want to delete this mission permanently?</string>
+    <string name="data_kosong">Records Still Empty</string>
 </resources>

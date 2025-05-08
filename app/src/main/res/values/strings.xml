@@ -9,7 +9,12 @@
         untuk melihat berapa usia mereka berdasarkan periode
         revolusi planet tersebut. Aplikasi ini menggunakan perhitungan
         sederhana dengan membagi umur di Bumi dengan periode revolusi
-        masing-masing planet.\n\nMuh Zayyan Al Thaaf Nur</string>
+        masing-masing planet.\n\nSelain itu, aplikasi ini juga menyediakan
+        fitur untuk mencatat misi penjelajahan antariksa ke berbagai planet.
+        Pengguna dapat membuat catatan misi yang mencakup nama planet tujuan,
+        tanggal misi, tipe misi (Observasi, Eksperimen, atau Eksplorasi Permukaan),
+        penemuan yang diperoleh, tantangan yang dihadapi, serta insight
+        atau pelajaran dari penjelajahan tersebut.\n\nMuh Zayyan Al Thaaf Nur</string>
     <string name="navigasi_hitung">Ayo Lihat Umurmu di Planet Lain!</string>
     <string name="navigasi_misi">Catatan Misi</string>
     <string name="kembali">Kembali</string>
@@ -118,5 +123,6 @@
     <string name="ya_kosongkan">Yes, clear</string>
     <string name="pulihkan">Pulihkan</string>
     <string name="hapus_permanen">Hapus Permanen</string>
+    <string name="data_kosong">Catatan Masih Kosong</string>
 </resources>
 
