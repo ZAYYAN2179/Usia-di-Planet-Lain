@@ -2,6 +2,7 @@ package com.zayyan0072.usiadiplanetlain.ui.theme.screen
 
 import android.content.res.Configuration
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,11 +11,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,8 +29,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -49,6 +55,9 @@ import com.zayyan0072.usiadiplanetlain.R
 import com.zayyan0072.usiadiplanetlain.model.DetailViewModel
 import com.zayyan0072.usiadiplanetlain.ui.theme.UsiaDiPlanetLainTheme
 import com.zayyan0072.usiadiplanetlain.util.ViewModelFactory
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 const val KEY_ID_MISSION = "idMission"
 
@@ -262,6 +271,35 @@ fun FormMission(
     var expandedPlanet by remember { mutableStateOf(false) }
     var expandedTipe by remember { mutableStateOf(false) }
 
+    val datePickerState = rememberDatePickerState()
+    var datePickerVisible by remember { mutableStateOf(false) }
+    val dateFormatter = remember { SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()) }
+
+    if (datePickerVisible) {
+        DatePickerDialog(
+            onDismissRequest = { datePickerVisible = false },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        datePickerState.selectedDateMillis?.let { millis ->
+                            onTanggalMisiChange(dateFormatter.format(Date(millis)))
+                        }
+                        datePickerVisible = false
+                    }
+                ) {
+                    Text("Ok")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { datePickerVisible = false }) {
+                    Text(text = stringResource(R.string.tombol_batal))
+                }
+            }
+        ) {
+            DatePicker(state = datePickerState)
+        }
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -302,9 +340,16 @@ fun FormMission(
 
         OutlinedTextField(
             value = tanggalMisi,
-            onValueChange = onTanggalMisiChange,
-            label = { Text(text = stringResource(R.string.tanggal_misi)) },
-            singleLine = true,
+            onValueChange = {},
+            readOnly = true,
+            label = { Text(stringResource(R.string.tanggal_misi)) },
+            trailingIcon = {
+                Icon(
+                    Icons.Default.DateRange,
+                    contentDescription = stringResource(R.string.tanggal_misi),
+                    modifier = Modifier.clickable { datePickerVisible = true }
+                )
+            },
             modifier = Modifier.fillMaxWidth()
         )
 
