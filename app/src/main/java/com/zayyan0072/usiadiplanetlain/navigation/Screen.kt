@@ -12,4 +12,5 @@ sealed class Screen(val route: String) {
         fun withId(id: Long) = "detailMissionScreen/$id"
     }
     data object RecycleBin: Screen("recycleBinScreen")
+    data object PlanetToolsScreen: Screen("planetToolsScreen")
 }

@@ -13,6 +13,7 @@ import com.zayyan0072.usiadiplanetlain.ui.theme.screen.DetailMission
 import com.zayyan0072.usiadiplanetlain.ui.theme.screen.KEY_ID_MISSION
 import com.zayyan0072.usiadiplanetlain.ui.theme.screen.MainScreen
 import com.zayyan0072.usiadiplanetlain.ui.theme.screen.MissionListScreen
+import com.zayyan0072.usiadiplanetlain.ui.theme.screen.PlanetToolsScreen
 import com.zayyan0072.usiadiplanetlain.ui.theme.screen.RecycleBinScreen
 
 @Composable
@@ -47,6 +48,9 @@ fun SetupNavGraph(navController: NavHostController = rememberNavController()) {
         }
         composable(route = Screen.RecycleBin.route) {
             RecycleBinScreen(navController)
+        }
+        composable(route = Screen.PlanetToolsScreen.route) {
+            PlanetToolsScreen(navController)
         }
     }
 }
