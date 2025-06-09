@@ -1,19 +1,26 @@
 package com.zayyan0072.usiadiplanetlain.network
 
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.zayyan0072.usiadiplanetlain.model.Tools
 import retrofit2.Retrofit
-import retrofit2.converter.scalars.ScalarsConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 
 private const val BASE_URL = "https://planetapi.bagasaldianata.my.id/api/"
 
+private val moshi = Moshi.Builder()
+    .add(KotlinJsonAdapterFactory())
+    .build()
+
 private val retrofit = Retrofit.Builder()
-    .addConverterFactory(ScalarsConverterFactory.create())
+    .addConverterFactory(MoshiConverterFactory.create(moshi))
     .baseUrl(BASE_URL)
     .build()
 
 interface PlanetApiService {
     @GET("planets/")
-    suspend fun getPlanet(): String
+    suspend fun getPlanet(): List<Tools>
 }
 
 object PlanetApi {

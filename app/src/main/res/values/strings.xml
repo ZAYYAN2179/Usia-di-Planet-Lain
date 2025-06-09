@@ -127,5 +127,6 @@
 
     <!-- String XML di screen PlanetToolsScreen -->
     <string name="planet_tools_screen">Alat Eksplorasi Planet</string>
+    <string name="gambar">Gambar %1$s</string>
 </resources>
 
