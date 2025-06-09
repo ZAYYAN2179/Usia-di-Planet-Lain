@@ -92,4 +92,6 @@
     <string name="data_kosong">Records Still Empty</string>
     <string name="planet_tools_screen">Planet Tools Screen</string>
     <string name="gambar">Image %1$s</string>
+    <string name="error">Failed to load data.. No connection.</string>
+    <string name="try_again">Try again</string>
 </resources>

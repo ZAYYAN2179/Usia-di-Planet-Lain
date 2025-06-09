@@ -128,5 +128,7 @@
     <!-- String XML di screen PlanetToolsScreen -->
     <string name="planet_tools_screen">Alat Eksplorasi Planet</string>
     <string name="gambar">Gambar %1$s</string>
+    <string name="error">Gagal memuat data.. Tidak ada koneksi.</string>
+    <string name="try_again">Coba lagi</string>
 </resources>
 
