@@ -16,9 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.zayyan0072.usiadiplanetlain.R
+import com.zayyan0072.usiadiplanetlain.model.MainViewModelAlatEksplorasi
 import com.zayyan0072.usiadiplanetlain.ui.theme.UsiaDiPlanetLainTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,6 +57,7 @@ fun PlanetToolsScreen(navController: NavHostController) {
 
 @Composable
 fun ScreenContentTools(modifier: Modifier = Modifier, navController: NavHostController) {
+    val viewModel: MainViewModelAlatEksplorasi = viewModel()
 }
 
 @Preview(showBackground = true)
