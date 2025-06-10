@@ -1,5 +1,6 @@
 package com.zayyan0072.usiadiplanetlain.model
 
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -9,6 +10,10 @@ import com.zayyan0072.usiadiplanetlain.network.PlanetApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.ByteArrayOutputStream
 
 class MainViewModelAlatEksplorasi: ViewModel() {
 
@@ -18,15 +23,14 @@ class MainViewModelAlatEksplorasi: ViewModel() {
     var status = MutableStateFlow(ApiStatus.LOADING)
         private set
 
-    init {
-        retrieveData()
-    }
+    var errorMessage = mutableStateOf<String?>(null)
+        private set
 
-    fun retrieveData() {
+    fun retrieveData(email: String) {
         viewModelScope.launch(Dispatchers.IO) {
             status.value = ApiStatus.LOADING
             try {
-                data.value = PlanetApi.service.getPlanet()
+                data.value = PlanetApi.service.getPlanet(email)
                 status.value = ApiStatus.SUCCESS
             } catch (e: Exception) {
                 Log.d("MainViewModelAlatEksplorasi", "Failure: ${e.message}")
@@ -34,4 +38,37 @@ class MainViewModelAlatEksplorasi: ViewModel() {
             }
         }
     }
+
+    fun saveData(email: String, nama: String, fungsi: String, bitmap: Bitmap) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val result = PlanetApi.service.postAlat(
+                    email,
+                    nama.toRequestBody("text/plain".toMediaTypeOrNull()),
+                    fungsi.toRequestBody("text/plain".toMediaTypeOrNull()),
+                    bitmap.toMultiPartBody()
+                )
+
+                if (result.status == "success")
+                    retrieveData(email)
+                else
+                    throw Exception(result.message)
+            } catch (e: Exception) {
+                Log.d("MainViewModel", "Failure: ${e.message}")
+                errorMessage.value = "Error: ${e.message}"
+            }
+        }
+    }
+
+    private fun Bitmap.toMultiPartBody(): MultipartBody.Part {
+        val stream = ByteArrayOutputStream()
+        compress(Bitmap.CompressFormat.JPEG, 80, stream)
+        val byteArray = stream.toByteArray()
+        val requestBody = byteArray.toRequestBody(
+            "image/jpg".toMediaTypeOrNull(), 0, byteArray.size)
+        return MultipartBody.Part.createFormData(
+            "image", "image.jpg", requestBody)
+    }
+
+    fun clearMessage() { errorMessage.value = null }
 }

@@ -8,6 +8,7 @@ import android.graphics.ImageDecoder
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +28,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -39,6 +41,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -93,6 +96,9 @@ fun PlanetToolsScreen(navController: NavHostController) {
     val context = LocalContext.current
     val dataStore = UserDataStore(context)
     val user by dataStore.userFlow.collectAsState(User())
+
+    val viewModel: MainViewModelAlatEksplorasi = viewModel()
+    val errorMessage by viewModel.errorMessage
 
     var showDialog by remember { mutableStateOf(false) }
     var showAlatDialog by remember { mutableStateOf(false) }
@@ -160,7 +166,7 @@ fun PlanetToolsScreen(navController: NavHostController) {
         }
     ) { innerPadding ->
         ScreenContentTools(
-            modifier = Modifier.padding(innerPadding)
+            viewModel, user.email, modifier = Modifier.padding(innerPadding)
         )
 
         if (showDialog) {
@@ -176,18 +182,26 @@ fun PlanetToolsScreen(navController: NavHostController) {
             AlatDialog(
                 bitmap = bitmap,
                 onDismissRequest = {showAlatDialog = false}) { nama, fungsi ->
-                Log.d("Tambah", "$nama $fungsi ditambahkan.")
+                viewModel.saveData(user.email, nama, fungsi, bitmap!!)
                 showAlatDialog = false
             }
+        }
+
+        if (errorMessage != null) {
+            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+            viewModel.clearMessage()
         }
     }
 }
 
 @Composable
-fun ScreenContentTools(modifier: Modifier = Modifier) {
-    val viewModel: MainViewModelAlatEksplorasi = viewModel()
+fun ScreenContentTools(viewModel: MainViewModelAlatEksplorasi, email: String, modifier: Modifier = Modifier) {
     val data by viewModel.data
     val status by viewModel.status.collectAsState()
+
+    LaunchedEffect(email) {
+        viewModel.retrieveData(email)
+    }
 
     when (status) {
         ApiStatus.LOADING -> {
@@ -219,9 +233,13 @@ fun ScreenContentTools(modifier: Modifier = Modifier) {
             ) {
                 Text(text = stringResource(id = R.string.error))
                 Button(
-                    onClick = { viewModel.retrieveData() },
+                    onClick = { viewModel.retrieveData(email) },
                     modifier = Modifier.padding(top = 16.dp),
-                    contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp)
+                    contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF0D47A1),
+                        contentColor = Color.White
+                    )
                 ) {
                     Text(text = stringResource(id = R.string.try_again))
                 }
