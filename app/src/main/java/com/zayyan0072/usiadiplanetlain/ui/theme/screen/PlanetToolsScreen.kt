@@ -1,6 +1,8 @@
 package com.zayyan0072.usiadiplanetlain.ui.theme.screen
 
+import android.content.Context
 import android.content.res.Configuration
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -43,20 +45,38 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.credentials.CredentialManager
+import androidx.credentials.CustomCredential
+import androidx.credentials.GetCredentialRequest
+import androidx.credentials.GetCredentialResponse
+import androidx.credentials.exceptions.GetCredentialException
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
+import com.zayyan0072.usiadiplanetlain.BuildConfig
 import com.zayyan0072.usiadiplanetlain.R
 import com.zayyan0072.usiadiplanetlain.model.MainViewModelAlatEksplorasi
 import com.zayyan0072.usiadiplanetlain.model.Tools
+import com.zayyan0072.usiadiplanetlain.model.User
 import com.zayyan0072.usiadiplanetlain.network.ApiStatus
+import com.zayyan0072.usiadiplanetlain.network.UserDataStore
 import com.zayyan0072.usiadiplanetlain.ui.theme.UsiaDiPlanetLainTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlanetToolsScreen(navController: NavHostController) {
+    val context = LocalContext.current
+    val dataStore = UserDataStore(context)
+    val user by dataStore.userFlow.collectAsState(User())
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -75,7 +95,23 @@ fun PlanetToolsScreen(navController: NavHostController) {
                 colors = TopAppBarDefaults.mediumTopAppBarColors(
                     containerColor = Color(0xFF0D47A1),
                     titleContentColor = Color.White
-                )
+                ),
+                actions = {
+                    IconButton(onClick = {
+                        if (user.email.isEmpty()) {
+                            CoroutineScope(Dispatchers.IO).launch { signIn(context, dataStore) }
+                        }
+                        else {
+                            Log.d("SIGN-IN", "User: $user")
+                        }
+                    }) {
+                        Icon(
+                            painter = painterResource(R.drawable.account_circle),
+                            contentDescription = stringResource(R.string.profil),
+                            tint = Color.White
+                        )
+                    }
+                }
             )
         }
     ) { innerPadding ->
@@ -100,6 +136,7 @@ fun ScreenContentTools(modifier: Modifier = Modifier) {
                 CircularProgressIndicator()
             }
         }
+
         ApiStatus.SUCCESS -> {
             LazyVerticalGrid(
                 modifier = modifier
@@ -110,6 +147,7 @@ fun ScreenContentTools(modifier: Modifier = Modifier) {
                 items(data) { ListItem(tools = it) }
             }
         }
+
         ApiStatus.FAILED -> {
             Column(
                 modifier = Modifier.fillMaxSize(),
@@ -176,6 +214,47 @@ fun ListItem(tools: Tools) {
                 )
             }
         }
+    }
+}
+
+private suspend fun signIn(context: Context, dataStore: UserDataStore) {
+    val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
+        .setFilterByAuthorizedAccounts(false)
+        .setServerClientId(BuildConfig.API_KEY)
+        .build()
+
+    val request: GetCredentialRequest = GetCredentialRequest.Builder()
+        .addCredentialOption(googleIdOption)
+        .build()
+
+    try {
+        val credentialManager = CredentialManager.create(context)
+        val result = credentialManager.getCredential(context, request)
+        handleSignIn(result, dataStore)
+    } catch (e: GetCredentialException) {
+        Log.e("SIGN-IN", "Error: ${e.errorMessage}")
+    }
+}
+
+private suspend fun handleSignIn(
+    result: GetCredentialResponse,
+    dataStore: UserDataStore
+) {
+    val credential = result.credential
+    if (credential is CustomCredential &&
+        credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+        try {
+            val googleId = GoogleIdTokenCredential.createFrom(credential.data)
+            val nama = googleId.displayName ?: ""
+            val email = googleId.id
+            val photoUrl = googleId.profilePictureUri.toString()
+            dataStore.saveData(User(nama, email, photoUrl))
+        } catch (e: GoogleIdTokenParsingException) {
+            Log.e("SIGN-IN", "Error: ${e.message}")
+        }
+    }
+    else {
+        Log.e("SIGN-IN", "Error: unrecognized custom credential type.")
     }
 }
 
