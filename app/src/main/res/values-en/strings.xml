@@ -95,4 +95,7 @@
     <string name="error">Failed to load data.. No connection.</string>
     <string name="try_again">Try again</string>
     <string name="profil">Profil</string>
+    <string name="tutup">Close</string>
+    <string name="logout">Logout</string>
+
 </resources>
