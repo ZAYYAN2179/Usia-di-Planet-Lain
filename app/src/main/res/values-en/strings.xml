@@ -98,4 +98,7 @@
     <string name="tutup">Close</string>
     <string name="logout">Logout</string>
     <string name="tambah_alat">Add tools</string>
+    <string name="nama">Name</string>
+    <string name="fungsi">Function</string>
+    <string name="batal">Cancel</string>
 </resources>

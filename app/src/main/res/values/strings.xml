@@ -134,5 +134,8 @@
     <string name="tutup">Tutup</string>
     <string name="logout">Logout</string>
     <string name="tambah_alat">Tambah alat</string>
+    <string name="nama">Nama</string>
+    <string name="fungsi">Fungsi</string>
+    <string name="batal">Batal</string>
 </resources>
 

@@ -95,10 +95,12 @@ fun PlanetToolsScreen(navController: NavHostController) {
     val user by dataStore.userFlow.collectAsState(User())
 
     var showDialog by remember { mutableStateOf(false) }
+    var showAlatDialog by remember { mutableStateOf(false) }
 
     var bitmap: Bitmap? by remember { mutableStateOf(null) }
     val launcher = rememberLauncherForActivityResult(CropImageContract()) {
         bitmap = getCroppedImage(context.contentResolver, it)
+        if (bitmap != null) showAlatDialog = true
     }
 
     Scaffold(
@@ -148,10 +150,11 @@ fun PlanetToolsScreen(navController: NavHostController) {
                     )
                 )
                 launcher.launch(options)
-            }) {
+            }, containerColor = Color(0xFF0D47A1)) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(id = R.string.tambah_alat)
+                    contentDescription = stringResource(id = R.string.tambah_alat),
+                    tint = Color.White
                 )
             }
         }
@@ -166,6 +169,15 @@ fun PlanetToolsScreen(navController: NavHostController) {
                 onDismissRequest = { showDialog = false }) {
                 CoroutineScope(Dispatchers.IO).launch { signOut(context, dataStore) }
                 showDialog = false
+            }
+        }
+
+        if (showAlatDialog) {
+            AlatDialog(
+                bitmap = bitmap,
+                onDismissRequest = {showAlatDialog = false}) { nama, fungsi ->
+                Log.d("Tambah", "$nama $fungsi ditambahkan.")
+                showAlatDialog = false
             }
         }
     }
