@@ -42,6 +42,7 @@ class MainViewModelAlatEksplorasi: ViewModel() {
     fun saveData(email: String, nama: String, fungsi: String, bitmap: Bitmap) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                Log.d("UploadDebug", "Email: $email, Nama: $nama, Fungsi: $fungsi")
                 val result = PlanetApi.service.postAlat(
                     email,
                     nama.toRequestBody("text/plain".toMediaTypeOrNull()),
@@ -67,7 +68,7 @@ class MainViewModelAlatEksplorasi: ViewModel() {
         val requestBody = byteArray.toRequestBody(
             "image/jpg".toMediaTypeOrNull(), 0, byteArray.size)
         return MultipartBody.Part.createFormData(
-            "image", "image.jpg", requestBody)
+            "gambar", "image.jpg", requestBody)
     }
 
     fun clearMessage() { errorMessage.value = null }
