@@ -15,18 +15,23 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -38,6 +43,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -49,6 +55,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -84,6 +91,7 @@ import com.zayyan0072.usiadiplanetlain.model.MainViewModelAlatEksplorasi
 import com.zayyan0072.usiadiplanetlain.model.Tools
 import com.zayyan0072.usiadiplanetlain.model.User
 import com.zayyan0072.usiadiplanetlain.network.ApiStatus
+import com.zayyan0072.usiadiplanetlain.network.PlanetApi
 import com.zayyan0072.usiadiplanetlain.network.UserDataStore
 import com.zayyan0072.usiadiplanetlain.ui.theme.UsiaDiPlanetLainTheme
 import kotlinx.coroutines.CoroutineScope
@@ -132,8 +140,7 @@ fun PlanetToolsScreen(navController: NavHostController) {
                     IconButton(onClick = {
                         if (user.email.isEmpty()) {
                             CoroutineScope(Dispatchers.IO).launch { signIn(context, dataStore) }
-                        }
-                        else {
+                        } else {
                             showDialog = true
                         }
                     }) {
@@ -181,23 +188,44 @@ fun PlanetToolsScreen(navController: NavHostController) {
         if (showAlatDialog) {
             AlatDialog(
                 bitmap = bitmap,
-                onDismissRequest = {showAlatDialog = false}) { nama, fungsi ->
+                onDismissRequest = { showAlatDialog = false }) { nama, fungsi ->
                 viewModel.saveData(user.email, nama, fungsi, bitmap!!)
                 showAlatDialog = false
             }
         }
 
-        if (errorMessage != null) {
-            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
-            viewModel.clearMessage()
-        }
+    }
+
+    if (errorMessage != null) {
+        Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+        viewModel.clearMessage()
     }
 }
 
 @Composable
-fun ScreenContentTools(viewModel: MainViewModelAlatEksplorasi, email: String, modifier: Modifier = Modifier) {
+fun ScreenContentTools(
+    viewModel: MainViewModelAlatEksplorasi,
+    email: String,
+    modifier: Modifier = Modifier
+) {
     val data by viewModel.data
     val status by viewModel.status.collectAsState()
+    val deleteStatus by viewModel.deleteStatus.collectAsState()
+    val errorMessage by viewModel.errorMessage
+
+    // Handle delete status messages
+    LaunchedEffect(deleteStatus) {
+        when (deleteStatus) {
+            ApiStatus.SUCCESS -> {
+                // Optionally show success message
+                Log.d("DeleteStatus", "Item berhasil dihapus")
+            }
+            ApiStatus.FAILED -> {
+                Log.d("DeleteStatus", "Gagal menghapus item")
+            }
+            else -> {}
+        }
+    }
 
     LaunchedEffect(email) {
         viewModel.retrieveData(email)
@@ -221,7 +249,15 @@ fun ScreenContentTools(viewModel: MainViewModelAlatEksplorasi, email: String, mo
                 columns = GridCells.Fixed(2),
                 contentPadding = PaddingValues(bottom = 80.dp)
             ) {
-                items(data) { ListItem(tools = it) }
+                items(data) {
+                    ListItem(
+                        tools = it,
+                        onDelete = { planetId ->
+                            viewModel.deleteData(email, planetId)
+                        },
+                        isDeleting = deleteStatus == ApiStatus.LOADING
+                    )
+                }
             }
         }
 
@@ -246,39 +282,58 @@ fun ScreenContentTools(viewModel: MainViewModelAlatEksplorasi, email: String, mo
             }
         }
     }
+
+    errorMessage?.let { message ->
+        LaunchedEffect(message) {
+            Log.e("Error", message)
+            viewModel.clearMessage()
+        }
+    }
 }
 
 @Composable
-fun ListItem(tools: Tools) {
+fun ListItem(
+    tools: Tools,
+    onDelete: (Int) -> Unit,
+    isDeleting: Boolean = false
+) {
+    var showDeleteDialog by remember { mutableStateOf(false) }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         ) {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(tools.gambar)
-                    .crossfade(true)
-                    .build(),
-                contentDescription = stringResource(R.string.gambar, tools.nama),
-                contentScale = ContentScale.Crop,
-                placeholder = painterResource(id = R.drawable.loading_img),
-                error = painterResource(id = R.drawable.broken_image),
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(180.dp)
-            )
+            ) {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(PlanetApi.getToolsUrl(tools.gambar))
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = stringResource(R.string.gambar, tools.nama),
+                    contentScale = ContentScale.Crop,
+                    placeholder = painterResource(id = R.drawable.loading_img),
+                    error = painterResource(id = R.drawable.broken_image),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+                )
+            }
+
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color.White)
-                    .padding(12.dp)
+                    .padding(16.dp)
             ) {
                 Text(
                     text = tools.nama,
@@ -286,15 +341,69 @@ fun ListItem(tools: Tools) {
                     fontWeight = FontWeight.Bold,
                     color = Color.Black
                 )
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(6.dp))
                 Text(
                     text = tools.fungsi,
                     fontSize = 14.sp,
                     fontStyle = FontStyle.Italic,
-                    color = Color.DarkGray
+                    color = Color.Gray
                 )
+
+                Spacer(modifier = Modifier.height(12.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    IconButton(
+                        onClick = { showDeleteDialog = true },
+                        enabled = !isDeleting,
+                        modifier = Modifier
+                            .background(Color.Red.copy(alpha = 0.85f), CircleShape)
+                            .size(36.dp)
+                    ) {
+                        if (isDeleting) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(18.dp),
+                                strokeWidth = 2.dp,
+                                color = Color.White
+                            )
+                        } else {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = "Hapus",
+                                tint = Color.White,
+                                modifier = Modifier.size(18.dp)
+                            )
+                        }
+                    }
+                }
             }
         }
+    }
+
+    if (showDeleteDialog) {
+        AlertDialog(
+            onDismissRequest = { showDeleteDialog = false },
+            title = { Text(text = "Konfirmasi Hapus") },
+            text = { Text(text = "Apakah Anda yakin ingin menghapus '${tools.nama}'?") },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        onDelete(tools.id)
+                        showDeleteDialog = false
+                    }
+                ) {
+                    Text("Hapus", color = Color.Red)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteDialog = false }) {
+                    Text("Batal")
+                }
+            }
+        )
     }
 }
 
@@ -323,7 +432,8 @@ private suspend fun handleSignIn(
 ) {
     val credential = result.credential
     if (credential is CustomCredential &&
-        credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+        credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
+    ) {
         try {
             val googleId = GoogleIdTokenCredential.createFrom(credential.data)
             val nama = googleId.displayName ?: ""
@@ -333,8 +443,7 @@ private suspend fun handleSignIn(
         } catch (e: GoogleIdTokenParsingException) {
             Log.e("SIGN-IN", "Error: ${e.message}")
         }
-    }
-    else {
+    } else {
         Log.e("SIGN-IN", "Error: unrecognized custom credential type.")
     }
 }

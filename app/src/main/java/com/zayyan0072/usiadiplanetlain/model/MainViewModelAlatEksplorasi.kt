@@ -26,6 +26,9 @@ class MainViewModelAlatEksplorasi: ViewModel() {
     var errorMessage = mutableStateOf<String?>(null)
         private set
 
+    var deleteStatus = MutableStateFlow<ApiStatus?>(null)
+        private set
+
     fun retrieveData(email: String) {
         viewModelScope.launch(Dispatchers.IO) {
             status.value = ApiStatus.LOADING
@@ -61,6 +64,30 @@ class MainViewModelAlatEksplorasi: ViewModel() {
         }
     }
 
+    fun deleteData(email: String, id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                deleteStatus.value = ApiStatus.LOADING
+                Log.d("DeleteDebug", "Email: $email, ID: $id")
+
+                // Sekarang menggunakan DELETE murni ke endpoint /planets/destroy
+                val result = PlanetApi.service.deletePlanet("Bearer $email", id)
+
+                if (result.status == "success") {
+                    deleteStatus.value = ApiStatus.SUCCESS
+                    retrieveData(email)
+                } else {
+                    deleteStatus.value = ApiStatus.FAILED
+                    throw Exception(result.message)
+                }
+            } catch (e: Exception) {
+                Log.d("MainViewModel", "Delete Failure: ${e.message}")
+                deleteStatus.value = ApiStatus.FAILED
+                errorMessage.value = "Error menghapus data: ${e.message}"
+            }
+        }
+    }
+
     private fun Bitmap.toMultiPartBody(): MultipartBody.Part {
         val stream = ByteArrayOutputStream()
         compress(Bitmap.CompressFormat.JPEG, 80, stream)
@@ -71,5 +98,8 @@ class MainViewModelAlatEksplorasi: ViewModel() {
             "gambar", "image.jpg", requestBody)
     }
 
-    fun clearMessage() { errorMessage.value = null }
+    fun clearMessage() {
+        errorMessage.value = null
+        deleteStatus.value = null
+    }
 }

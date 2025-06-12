@@ -137,5 +137,7 @@
     <string name="nama">Nama</string>
     <string name="fungsi">Fungsi</string>
     <string name="batal">Batal</string>
+    <string name="hapus">Hapus</string>
+    <string name="pesan_hapus">Hapus Data Ini?</string>
 </resources>
 

@@ -8,6 +8,8 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
@@ -32,18 +34,30 @@ interface PlanetApiService {
     ): List<Tools>
 
     @Multipart
-    @POST("planets/")
+    @POST("planets")
     suspend fun postAlat(
         @Header("Authorization") email: String,
         @Part("nama") nama: RequestBody,
         @Part("fungsi") fungsi: RequestBody,
         @Part gambar: MultipartBody.Part
     ): OpStatus
+
+    @FormUrlEncoded
+    @POST("planets/destroy")
+    suspend fun deletePlanet(
+        @Header("Authorization") email: String,
+        @Field("id") planetId: Int,
+        @Field("_method") method: String = "DELETE"
+    ): OpStatus
 }
 
 object PlanetApi {
     val service: PlanetApiService by lazy {
         retrofit.create(PlanetApiService::class.java)
+    }
+
+    fun getToolsUrl(gambar: String): String {
+        return gambar
     }
 }
 

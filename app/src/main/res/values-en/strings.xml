@@ -101,4 +101,6 @@
     <string name="nama">Name</string>
     <string name="fungsi">Function</string>
     <string name="batal">Cancel</string>
+    <string name="hapus">Delete</string>
+    <string name="pesan_hapus">Are you sure delete this data??</string>
 </resources>
