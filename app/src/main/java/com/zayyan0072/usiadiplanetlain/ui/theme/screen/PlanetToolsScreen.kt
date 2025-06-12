@@ -297,6 +297,7 @@ fun ListItem(
     onDelete: (Int) -> Unit,
     isDeleting: Boolean = false
 ) {
+    Log.d("TOOLS_GAMBAR", tools.gambar)
     var showDeleteDialog by remember { mutableStateOf(false) }
 
     Card(

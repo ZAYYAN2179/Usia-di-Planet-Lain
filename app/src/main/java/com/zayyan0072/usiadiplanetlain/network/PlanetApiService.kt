@@ -28,7 +28,7 @@ private val retrofit = Retrofit.Builder()
     .build()
 
 interface PlanetApiService {
-    @GET("planets/")
+    @GET("planets")
     suspend fun getPlanet(
         @Header("Authorization") email: String
     ): List<Tools>
@@ -57,7 +57,7 @@ object PlanetApi {
     }
 
     fun getToolsUrl(gambar: String): String {
-        return gambar
+        return "${BASE_URL}planets/image?id=$gambar"
     }
 }
 
