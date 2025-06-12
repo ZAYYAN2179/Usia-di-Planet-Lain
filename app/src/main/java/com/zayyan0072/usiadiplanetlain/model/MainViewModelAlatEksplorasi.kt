@@ -33,10 +33,12 @@ class MainViewModelAlatEksplorasi: ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             status.value = ApiStatus.LOADING
             try {
-                data.value = PlanetApi.service.getPlanet(email)
+                val result = PlanetApi.service.getPlanet(email)
+                data.value = result
                 status.value = ApiStatus.SUCCESS
             } catch (e: Exception) {
                 Log.d("MainViewModelAlatEksplorasi", "Failure: ${e.message}")
+                data.value = emptyList() // Set data kosong saat error
                 status.value = ApiStatus.FAILED
             }
         }
@@ -101,5 +103,9 @@ class MainViewModelAlatEksplorasi: ViewModel() {
     fun clearMessage() {
         errorMessage.value = null
         deleteStatus.value = null
+    }
+
+    fun setStatusFailed() {
+        status.value = ApiStatus.FAILED
     }
 }

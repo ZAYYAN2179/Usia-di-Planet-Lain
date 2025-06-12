@@ -31,6 +31,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -41,6 +42,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -63,6 +65,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -213,22 +216,20 @@ fun ScreenContentTools(
     val deleteStatus by viewModel.deleteStatus.collectAsState()
     val errorMessage by viewModel.errorMessage
 
-    // Handle delete status messages
     LaunchedEffect(deleteStatus) {
         when (deleteStatus) {
-            ApiStatus.SUCCESS -> {
-                // Optionally show success message
-                Log.d("DeleteStatus", "Item berhasil dihapus")
-            }
-            ApiStatus.FAILED -> {
-                Log.d("DeleteStatus", "Gagal menghapus item")
-            }
+            ApiStatus.SUCCESS -> Log.d("DeleteStatus", "Item berhasil dihapus")
+            ApiStatus.FAILED -> Log.d("DeleteStatus", "Gagal menghapus item")
             else -> {}
         }
     }
 
     LaunchedEffect(email) {
-        viewModel.retrieveData(email)
+        if (email.isNotEmpty()) {
+            viewModel.retrieveData(email)
+        } else {
+            viewModel.setStatusFailed()
+        }
     }
 
     when (status) {
@@ -262,22 +263,51 @@ fun ScreenContentTools(
         }
 
         ApiStatus.FAILED -> {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(text = stringResource(id = R.string.error))
-                Button(
-                    onClick = { viewModel.retrieveData(email) },
-                    modifier = Modifier.padding(top = 16.dp),
-                    contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF0D47A1),
-                        contentColor = Color.White
-                    )
+            if (email.isEmpty()) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(text = stringResource(id = R.string.try_again))
+                    Text(
+                        text = "Silakan login terlebih dahulu untuk melihat data",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = Color.Gray
+                    )
+                }
+            } else {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = null,
+                        modifier = Modifier.size(64.dp),
+                        tint = Color.Gray
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Text(
+                        text = "Terjadi kesalahan saat memuat data",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Gray,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Button(
+                        onClick = { viewModel.retrieveData(email) },
+                        modifier = Modifier.padding(top = 16.dp),
+                        contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF0D47A1),
+                            contentColor = Color.White
+                        )
+                    ) {
+                        Text(text = stringResource(id = R.string.try_again))
+                    }
                 }
             }
         }
