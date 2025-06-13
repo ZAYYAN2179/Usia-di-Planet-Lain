@@ -12,8 +12,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
 
 class MainViewModelAlatEksplorasi: ViewModel() {
 
@@ -29,6 +32,12 @@ class MainViewModelAlatEksplorasi: ViewModel() {
     var deleteStatus = MutableStateFlow<ApiStatus?>(null)
         private set
 
+    var updateStatus = MutableStateFlow<ApiStatus?>(null)
+        private set
+
+    var deletingItemId = mutableStateOf<Int?>(null)
+        private set
+
     fun retrieveData(email: String) {
         viewModelScope.launch(Dispatchers.IO) {
             status.value = ApiStatus.LOADING
@@ -38,7 +47,7 @@ class MainViewModelAlatEksplorasi: ViewModel() {
                 status.value = ApiStatus.SUCCESS
             } catch (e: Exception) {
                 Log.d("MainViewModelAlatEksplorasi", "Failure: ${e.message}")
-                data.value = emptyList() // Set data kosong saat error
+                data.value = emptyList()
                 status.value = ApiStatus.FAILED
             }
         }
@@ -66,13 +75,52 @@ class MainViewModelAlatEksplorasi: ViewModel() {
         }
     }
 
+    fun updateData(email: String, id: Int, nama: String, fungsi: String, bitmap: Bitmap?) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                updateStatus.value = ApiStatus.LOADING
+                val namaPart = nama.toRequestBody("text/plain".toMediaTypeOrNull())
+                val fungsiPart = fungsi.toRequestBody("text/plain".toMediaTypeOrNull())
+                val methodPart = "PUT".toRequestBody("text/plain".toMediaTypeOrNull())
+
+                val gambarPart = bitmap?.let {
+                    val file = File.createTempFile("temp", ".jpg")
+                    val out = FileOutputStream(file)
+                    it.compress(Bitmap.CompressFormat.JPEG, 100, out)
+                    out.close()
+
+                    val reqFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                    MultipartBody.Part.createFormData("gambar", file.name, reqFile)
+                }
+
+                val response = PlanetApi.service.updatePlanet(
+                    token = "Bearer $email",
+                    id = id,
+                    nama = namaPart,
+                    fungsi = fungsiPart,
+                    gambar = gambarPart,
+                    method = methodPart
+                )
+
+                if (response.isSuccessful) {
+                    updateStatus.value = ApiStatus.SUCCESS
+                    retrieveData(email)
+                } else {
+                    updateStatus.value = ApiStatus.FAILED
+                }
+            } catch (e: Exception) {
+                updateStatus.value = ApiStatus.FAILED
+            }
+        }
+    }
+
     fun deleteData(email: String, id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                deletingItemId.value = id
                 deleteStatus.value = ApiStatus.LOADING
                 Log.d("DeleteDebug", "Email: $email, ID: $id")
 
-                // Sekarang menggunakan DELETE murni ke endpoint /planets/destroy
                 val result = PlanetApi.service.deletePlanet("Bearer $email", id)
 
                 if (result.status == "success") {
@@ -86,6 +134,8 @@ class MainViewModelAlatEksplorasi: ViewModel() {
                 Log.d("MainViewModel", "Delete Failure: ${e.message}")
                 deleteStatus.value = ApiStatus.FAILED
                 errorMessage.value = "Error menghapus data: ${e.message}"
+            } finally {
+                deletingItemId.value = null
             }
         }
     }

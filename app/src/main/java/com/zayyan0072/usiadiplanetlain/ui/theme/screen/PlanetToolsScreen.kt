@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -31,6 +32,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -160,7 +163,7 @@ fun PlanetToolsScreen(navController: NavHostController) {
             FloatingActionButton(onClick = {
                 val options = CropImageContractOptions(
                     null, CropImageOptions(
-                        imageSourceIncludeGallery = false,
+                        imageSourceIncludeGallery = true,
                         imageSourceIncludeCamera = true,
                         fixAspectRatio = true
                     )
@@ -215,6 +218,9 @@ fun ScreenContentTools(
     val status by viewModel.status.collectAsState()
     val deleteStatus by viewModel.deleteStatus.collectAsState()
     val errorMessage by viewModel.errorMessage
+    val updateStatus by viewModel.updateStatus.collectAsState()
+    val deletingItemId by viewModel.deletingItemId
+
 
     LaunchedEffect(deleteStatus) {
         when (deleteStatus) {
@@ -232,6 +238,13 @@ fun ScreenContentTools(
         }
     }
 
+    LaunchedEffect(updateStatus) {
+        if (updateStatus == ApiStatus.SUCCESS) {
+            viewModel.retrieveData(email)
+            viewModel.updateStatus.value = null
+        }
+    }
+
     when (status) {
         ApiStatus.LOADING -> {
             Box(
@@ -243,21 +256,70 @@ fun ScreenContentTools(
         }
 
         ApiStatus.SUCCESS -> {
-            LazyVerticalGrid(
+            Column(
                 modifier = modifier
                     .fillMaxSize()
-                    .padding(4.dp),
-                columns = GridCells.Fixed(2),
-                contentPadding = PaddingValues(bottom = 80.dp)
+                    .padding(4.dp)
             ) {
-                items(data) {
-                    ListItem(
-                        tools = it,
-                        onDelete = { planetId ->
-                            viewModel.deleteData(email, planetId)
-                        },
-                        isDeleting = deleteStatus == ApiStatus.LOADING
+                Button(
+                    onClick = { viewModel.retrieveData(email) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF0D47A1),
+                        contentColor = Color.White
                     )
+                ) {
+                    Text(text = "Refresh")
+                }
+
+                if (data.isEmpty()) {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Info,
+                            contentDescription = null,
+                            modifier = Modifier.size(64.dp),
+                            tint = Color.Gray
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Text(
+                            text = "Belum ada data alat eksplorasi.",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Color.Gray,
+                            textAlign = TextAlign.Center
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Text(
+                            text = "Silakan tambahkan data terlebih dahulu.",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color.Gray,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                } else {
+                    LazyVerticalGrid(
+                        modifier = Modifier.fillMaxSize(),
+                        columns = GridCells.Fixed(2),
+                        contentPadding = PaddingValues(bottom = 80.dp)
+                    ) {
+                        items(data) {
+                            ListItem(
+                                tools = it,
+                                onDelete = { planetId ->
+                                    viewModel.deleteData(email, planetId) },
+                                isDeleting = deletingItemId == it.id,
+                                viewModel = viewModel,
+                                email = email
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -325,40 +387,36 @@ fun ScreenContentTools(
 fun ListItem(
     tools: Tools,
     onDelete: (Int) -> Unit,
-    isDeleting: Boolean = false
+    isDeleting: Boolean = false,
+    viewModel: MainViewModelAlatEksplorasi,
+    email: String
 ) {
-    Log.d("TOOLS_GAMBAR", tools.gambar)
+    var bitmap by remember { mutableStateOf<Bitmap?>(null) }
+    var showEditDialog by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 8.dp),
-        shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
+            .padding(horizontal = 16.dp, vertical = 10.dp),
+        shape = RoundedCornerShape(20.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
-        Column(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Box(
+        Column {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(PlanetApi.getToolsUrl(tools.gambar))
+                    .crossfade(true)
+                    .build(),
+                contentDescription = stringResource(R.string.gambar, tools.nama),
+                contentScale = ContentScale.Crop,
+                placeholder = painterResource(id = R.drawable.loading_img),
+                error = painterResource(id = R.drawable.broken_image),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(180.dp)
-            ) {
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(PlanetApi.getToolsUrl(tools.gambar))
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = stringResource(R.string.gambar, tools.nama),
-                    contentScale = ContentScale.Crop,
-                    placeholder = painterResource(id = R.drawable.loading_img),
-                    error = painterResource(id = R.drawable.broken_image),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
-                )
-            }
+                    .height(200.dp)
+                    .clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
+            )
 
             Column(
                 modifier = Modifier
@@ -368,30 +426,50 @@ fun ListItem(
             ) {
                 Text(
                     text = tools.nama,
-                    fontSize = 18.sp,
+                    maxLines = 1,
+                    fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.Black
+                    color = Color(0xFF333333)
                 )
+
                 Spacer(modifier = Modifier.height(6.dp))
+
                 Text(
                     text = tools.fungsi,
                     fontSize = 14.sp,
-                    fontStyle = FontStyle.Italic,
-                    color = Color.Gray
+                    maxLines = 3,
+                    color = Color.Gray,
+                    fontStyle = FontStyle.Italic
                 )
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(16.dp))
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Spacer(modifier = Modifier.weight(1f))
+                    IconButton(
+                        onClick = { showEditDialog = true },
+                        modifier = Modifier
+                            .background(Color(0xFF1976D2), shape = CircleShape)
+                            .size(36.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = "Edit",
+                            tint = Color.White,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.width(12.dp))
 
                     IconButton(
                         onClick = { showDeleteDialog = true },
                         enabled = !isDeleting,
                         modifier = Modifier
-                            .background(Color.Red.copy(alpha = 0.85f), CircleShape)
+                            .background(Color.Red.copy(alpha = 0.9f), CircleShape)
                             .size(36.dp)
                     ) {
                         if (isDeleting) {
@@ -413,6 +491,29 @@ fun ListItem(
             }
         }
     }
+
+    if (showEditDialog) {
+        EditAlatDialog(
+            existingTool = tools,
+            bitmap = bitmap,
+            onDismissRequest = {
+                showEditDialog = false
+                viewModel.retrieveData(email)
+            },
+            onImageSelected = { newBitmap -> bitmap = newBitmap },
+            onConfirmation = { newNama, newFungsi ->
+                viewModel.updateData(
+                    email = email,
+                    id = tools.id,
+                    nama = newNama,
+                    fungsi = newFungsi,
+                    bitmap = bitmap
+                )
+                viewModel.retrieveData(email)
+            }
+        )
+    }
+
 
     if (showDeleteDialog) {
         AlertDialog(
