@@ -31,6 +31,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Info
@@ -143,18 +144,37 @@ fun PlanetToolsScreen(navController: NavHostController) {
                     titleContentColor = Color.White
                 ),
                 actions = {
-                    IconButton(onClick = {
-                        if (user.email.isEmpty()) {
-                            CoroutineScope(Dispatchers.IO).launch { signIn(context, dataStore) }
-                        } else {
-                            showDialog = true
+                    IconButton(
+                        onClick = {
+                            if (user.email.isEmpty()) {
+                                CoroutineScope(Dispatchers.IO).launch { signIn(context, dataStore) }
+                            } else {
+                                showDialog = true
+                            }
                         }
-                    }) {
-                        Icon(
-                            painter = painterResource(R.drawable.account_circle),
-                            contentDescription = stringResource(R.string.profil),
-                            tint = Color.White
-                        )
+                    ) {
+                        val photoUrl = user.photoUrl
+                        if (photoUrl.isNotBlank()) {
+                            AsyncImage(
+                                model = ImageRequest.Builder(LocalContext.current)
+                                    .data(photoUrl)
+                                    .crossfade(true)
+                                    .build(),
+                                contentDescription = stringResource(R.string.profil),
+                                contentScale = ContentScale.Crop,
+                                placeholder = painterResource(id = R.drawable.loading_img),
+                                error = painterResource(id = R.drawable.account_circle),
+                                modifier = Modifier
+                                    .size(32.dp)
+                                    .clip(CircleShape)
+                            )
+                        } else {
+                            Icon(
+                                painter = painterResource(R.drawable.account_circle),
+                                contentDescription = stringResource(R.string.profil),
+                                tint = Color.White
+                            )
+                        }
                     }
                 }
             )
@@ -289,7 +309,7 @@ fun ScreenContentTools(
                         Spacer(modifier = Modifier.height(16.dp))
 
                         Text(
-                            text = "Belum ada data alat eksplorasi.",
+                            text = stringResource(R.string.belum_ada_data),
                             style = MaterialTheme.typography.bodyLarge,
                             color = Color.Gray,
                             textAlign = TextAlign.Center
@@ -297,7 +317,7 @@ fun ScreenContentTools(
                         Spacer(modifier = Modifier.height(8.dp))
 
                         Text(
-                            text = "Silakan tambahkan data terlebih dahulu.",
+                            text = stringResource(R.string.silakan_tambahkan_data),
                             style = MaterialTheme.typography.bodyMedium,
                             color = Color.Gray,
                             textAlign = TextAlign.Center
@@ -331,8 +351,16 @@ fun ScreenContentTools(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+                    Icon(
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = null,
+                        modifier = Modifier.size(100.dp),
+                        tint = Color.Gray
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+
                     Text(
-                        text = "Silakan login terlebih dahulu untuk melihat data",
+                        text = stringResource(R.string.ajakan_login),
                         style = MaterialTheme.typography.bodyLarge,
                         color = Color.Gray
                     )
@@ -352,7 +380,7 @@ fun ScreenContentTools(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
-                        text = "Terjadi kesalahan saat memuat data",
+                        text = stringResource(R.string.error),
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.Gray,
                         textAlign = TextAlign.Center
@@ -514,12 +542,11 @@ fun ListItem(
         )
     }
 
-
     if (showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },
-            title = { Text(text = "Konfirmasi Hapus") },
-            text = { Text(text = "Apakah Anda yakin ingin menghapus '${tools.nama}'?") },
+            title = { Text(text = stringResource(R.string.konfirmasi_hapus)) },
+            text = { Text(text = stringResource(R.string.pesan_hapus2, tools.nama))},
             confirmButton = {
                 TextButton(
                     onClick = {

@@ -13,7 +13,15 @@
         Users can create a mission log that includes the name of the destination planet,
         mission date, mission type (Observation, Experimentation, or Surface Exploration),
         discoveries made, challenges faced, and insights or lessons learned
-        from the exploration.\n\nMuh Zayyan Al Thaaf Nur</string>
+        from the exploration.\n\nIn addition to the age calculation and
+        mission logging features, AgeXplore Planet comes with a new planetary
+        exploration tool list that allows users to add exploration tool
+        data manually. This view presents information in the form of images,
+        names, and functions of various space exploration tools such as rovers,
+        satellites, and spacecraft. Data added by users will be sent and stored
+        through integration with the RESTful API. If no data has been entered,
+        the display will appear blank until the user starts adding the
+        desired exploration tool. \n\nMuh Zayyan Al Thaaf Nur</string>
     <string name="navigasi_hitung">Let\'s see your age on another planet!</string>
     <string name="kembali">Back</string>
     <string name="keluar_aplikasi">Exit</string>
@@ -103,4 +111,11 @@
     <string name="batal">Cancel</string>
     <string name="hapus">Delete</string>
     <string name="pesan_hapus">Are you sure delete this data??</string>
+    <string name="ajakan_login">Please login first to add data</string>
+    <string name="belum_ada_data">There is no exploration tool data yet.</string>
+    <string name="silakan_tambahkan_data">Please add data.</string>
+    <string name="ganti_gambar">Change Image</string>
+    <string name="perbarui">Update</string>
+    <string name="konfirmasi_hapus">Confirm Delete</string>
+    <string name="pesan_hapus2">Are you sure you want to delete %1$s?</string>
 </resources>

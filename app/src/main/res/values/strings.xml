@@ -14,7 +14,15 @@
         Pengguna dapat membuat catatan misi yang mencakup nama planet tujuan,
         tanggal misi, tipe misi (Observasi, Eksperimen, atau Eksplorasi Permukaan),
         penemuan yang diperoleh, tantangan yang dihadapi, serta insight
-        atau pelajaran dari penjelajahan tersebut.\n\nMuh Zayyan Al Thaaf Nur</string>
+        atau pelajaran dari penjelajahan tersebut.\n\nSelain fitur perhitungan umur dan pencatatan misi, AgeXplore Planet dilengkapi
+        dengan tampilan baru berupa daftar alat eksplorasi planet yang
+        memungkinkan pengguna untuk menambahkan data alat eksplorasi secara manual.
+        Tampilan ini menyajikan informasi berupa gambar, nama, dan fungsi dari berbagai
+        alat eksplorasi antariksa seperti rover, satelit, hingga wahana
+        luar angkasa. Data yang ditambahkan oleh pengguna akan dikirim dan
+        disimpan melalui integrasi dengan RESTful API. Jika belum ada data
+        yang dimasukkan, tampilan akan terlihat kosong hingga pengguna mulai
+        menambahkan alat eksplorasi yang diinginkan. \n\nMuh Zayyan Al Thaaf Nur</string>
     <string name="navigasi_hitung">Ayo Lihat Umurmu di Planet Lain!</string>
     <string name="navigasi_misi">Catatan Misi</string>
     <string name="kembali">Kembali</string>
@@ -139,5 +147,12 @@
     <string name="batal">Batal</string>
     <string name="hapus">Hapus</string>
     <string name="pesan_hapus">Hapus Data Ini?</string>
+    <string name="pesan_hapus2">Apakah anda yakin ingin menghapus %1$s?</string>
+    <string name="ajakan_login">Login terlebih dahulu untuk menambah data</string>
+    <string name="belum_ada_data">Belum ada data alat eksplorasi.</string>
+    <string name="silakan_tambahkan_data">Silakan tambahkan data.</string>
+    <string name="ganti_gambar">Ganti Gambar</string>
+    <string name="perbarui">Perbarui</string>
+    <string name="konfirmasi_hapus">Konfirmasi Hapus</string>
 </resources>
 

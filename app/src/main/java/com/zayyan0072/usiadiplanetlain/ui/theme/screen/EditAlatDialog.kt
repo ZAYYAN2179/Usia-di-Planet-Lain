@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
@@ -114,7 +115,7 @@ fun EditAlatDialog(
                 OutlinedTextField(
                     value = nama,
                     onValueChange = { nama = it },
-                    label = { Text(text = "Nama") },
+                    label = { Text(text = stringResource(R.string.nama)) },
                     maxLines = 1,
                     keyboardOptions = KeyboardOptions(
                         capitalization = KeyboardCapitalization.Words,
@@ -126,7 +127,7 @@ fun EditAlatDialog(
                 OutlinedTextField(
                     value = fungsi,
                     onValueChange = { fungsi = it },
-                    label = { Text(text = "Fungsi") },
+                    label = { Text(text = stringResource(R.string.fungsi)) },
                     maxLines = 1,
                     keyboardOptions = KeyboardOptions(
                         capitalization = KeyboardCapitalization.Sentences,
@@ -149,7 +150,7 @@ fun EditAlatDialog(
                     },
                     modifier = Modifier.padding(top = 8.dp)
                 ) {
-                    Text("Ganti Gambar")
+                    Text(text = stringResource(R.string.ganti_gambar))
                 }
 
                 Row(
@@ -162,14 +163,14 @@ fun EditAlatDialog(
                         onClick = { onDismissRequest() },
                         modifier = Modifier.padding(8.dp)
                     ) {
-                        Text(text = "Batal")
+                        Text(text = stringResource(R.string.batal))
                     }
                     OutlinedButton(
                         onClick = { onConfirmation(nama, fungsi) },
                         enabled = nama.isNotEmpty() && fungsi.isNotEmpty() && hasChanges,
                         modifier = Modifier.padding(8.dp)
                     ) {
-                        Text(text = "Update")
+                        Text(text = stringResource(R.string.perbarui))
                     }
                 }
             }
